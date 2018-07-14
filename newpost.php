@@ -39,16 +39,16 @@
     </form>
  
 <?php
-echo '<script type="text/javascript" src="materialize.js"></script>';
+include_once 'conn.php';
+
 if (isset($_POST['ok_depature'])) {
     $got_place_input = $_POST['depature'];
     // echo $_POST['depature'];
-    include 'conn.php';
     $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
     $result = mysqli_query($conn, $sql_place);
     if (!$result) {
         printf("Error: %s\n", mysqli_error($conn));
-        exit();
+        // exit();
     }
 
     $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -211,11 +211,23 @@ if (isset($_POST['ok_post_type'])) {
 // echo $post_type;
 $get_valid_id = false;
 $post_id = '';
-while ($get_valid_id) {
-    $post_id = uniqid([$prefix = "post"[false]]); //generate a random post id
-    $sql_check_post_id = "SELECT * FROM posts WHERE id = '$post_id'";
-    $same_id = mysql_query($sql_check_post_id, $conn);
-    $num_same_id = mysql_num_rows($same_id);
+while (!$get_valid_id) {
+    $post_id = uniqid('post_'); //generate a random post id
+    $sql_check_ppost_id = "SELECT * FROM passengerposts WHERE id = '$post_id'";
+    $sql_check_dpost_id = "SELECT * FROM driverposts WHERE id = '$post_id'";
+    
+    $same_id_p = mysqli_query($conn, $sql_check_ppost_id);
+    $same_id_d = mysqli_query($conn, $sql_check_dpost_id);
+
+    if (!$same_id_p) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+    if (!$same_id_d) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+    $num_same_id = mysqli_num_rows($same_id_p) +  mysqli_num_rows($same_id_d);
     if ($num_same_id == 0) {
         $get_valid_id = true;
     }
