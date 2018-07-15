@@ -6,6 +6,10 @@
     <title>New A Post</title>
 
     <link rel="stylesheet" href="materialize.css"/>
+    <script src="js/libs/jquery.min.js" type="text/javascript"></script>
+    <script src="materialize.js" type="text/javascript"></script>
+
+
 
 </head>
 
@@ -13,24 +17,12 @@
 
     <div class="container">
 
-    <!-- <div class="row">
-        <form action="#" id="carform">
-        <div class="input-field col s6">
-            Firstname:<input type="text" name="fname">
-        </div>
-        <div class="input-field col s6">
-            <input type="submit">
-        </div>
-        </form>
-    </div>-->
-    <br>
-
-    <form action="#" method="post" width = 80% >
+    <form action="#" method="post">
         <div class="row">
             <div class="input-field col s6">
-                <!-- <label for="last_name">Last Name</label> -->
                     <label for="depature" class="label">Depature:</label>
-                    <input id="depature" name="depature" type="text" class="input" method="get"/>
+                    <input id="depature" name="depature" type="text" class="input-field" method="get"/>
+                    <!-- <input type="text" name="user_name" id="user_name" class="input-field"> -->
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_depature">OK</button>
@@ -39,7 +31,17 @@
     </form>
  
 <?php
+session_start();
+
 include_once 'conn.php';
+if (!isset($_SESSION['u_id'])) {
+?>
+    <script>
+        alert('Please log in first!');
+        window.location.href = "index.php";
+    </script>
+<?php
+}
 
 if (isset($_POST['ok_depature'])) {
     $got_place_input = $_POST['depature'];
@@ -54,26 +56,19 @@ if (isset($_POST['ok_depature'])) {
     $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
     // echo count($placeResult);
     $depature_placeid = '';
-    // echo "<table>
-    // <thead>
-    //   <tr>
-    //       <th>Place Name</th>
-    //       <th>Address</th>
-    //   </tr>
-    // </thead>  <tbody>";
-    // ob_start();
+ 
     echo '<form method="post">';
     $x = 0;
 
     // while ($arrayResult = mysql_fetch_array($place_result)) {
     foreach ($placeResult as $value) {
-        // echo "<tr><td>";
-        // echo $value['name'];
-        // echo "</td><td>";
-        // echo $value['address'];
-        // echo "</td><td></tr>";
+     
         echo $x;
         echo "alter_depature" . $x;
+        echo '<button onclick="myFunction()" name="alter_depature' . $x .
+        '" value="alter_depature' . $x .
+        '">'  . $value['name'] . $value['address'] .' </button>';
+        //<button onclick="myFunction()">Copy Text</button>
         echo '<p><label><input type="checkbox" name="alter_depature' . $x .
             '" value="alter_depature' . $x .
             '"/>   <span>' . $value['name'] . $value['address'] . '</span></label></p>';
@@ -97,6 +92,13 @@ if (isset($_POST['ok_depature'])) {
 }
 
 ?>
+    <script>
+        function myFunction() {
+            alert('myFunction works!');
+
+        }
+    
+    </script>
 
     <form action="" method="post">
         <div class="row">
@@ -141,13 +143,14 @@ if (isset($_POST['ok_destination'])) {
         <!-- Depature Date: -->
         <div class="row">
             <div class="col s12">
-        <label for="depature_date">Depature Date</label>
-        <!-- </div> -->
-            <!-- <div class="input-field col s6"> -->
-        <input id="depature_date" name="depature_date" type="date" class="input">
+                <label for="depature_date">Depature Date</label>
+                <!-- </div> -->
+                    <!-- <div class="input-field col s6"> -->
+                <input id="depature_date" name="depature_date" type="date" class="input">
 
             </div>
-            <div class="row">
+        </div>
+        <div class="row">
             <div class="input-field col s6">
                 <label for="proposed_price" class="label">Price:</label>
                 <input id="proposed_price" name="proposed_price" type="text" class="input"/>
@@ -155,7 +158,7 @@ if (isset($_POST['ok_destination'])) {
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_price">OK</button>
             </div>
-            </div>
+            <!-- </div> -->
         </div>
     </form>
 
@@ -213,21 +216,22 @@ $get_valid_id = false;
 $post_id = '';
 while (!$get_valid_id) {
     $post_id = uniqid('post_'); //generate a random post id
-    $sql_check_ppost_id = "SELECT * FROM passengerposts WHERE id = '$post_id'";
-    $sql_check_dpost_id = "SELECT * FROM driverposts WHERE id = '$post_id'";
+    $sql_check_ppost_id = "SELECT * FROM passengerposts WHERE postID = '$post_id'";
+    // $sql_check_dpost_id = "SELECT * FROM driverposts WHERE postID = '$post_id'";
     
     $same_id_p = mysqli_query($conn, $sql_check_ppost_id);
-    $same_id_d = mysqli_query($conn, $sql_check_dpost_id);
+    // $same_id_d = mysqli_query($conn, $sql_check_dpost_id);
 
     if (!$same_id_p) {
         printf("Error: %s\n", mysqli_error($conn));
         // exit();
     }
-    if (!$same_id_d) {
-        printf("Error: %s\n", mysqli_error($conn));
-        // exit();
-    }
-    $num_same_id = mysqli_num_rows($same_id_p) +  mysqli_num_rows($same_id_d);
+    // if (!$same_id_d) {
+    //     printf("Error: %s\n", mysqli_error($conn));
+    //     // exit();
+    // }
+    $num_same_id = mysqli_num_rows($same_id_p) ;
+    // +  mysqli_num_rows($same_id_d);
     if ($num_same_id == 0) {
         $get_valid_id = true;
     }
@@ -235,9 +239,9 @@ while (!$get_valid_id) {
 echo '<br/>';
 echo "this post id is:";
 echo $post_id;
-// $user_id = $_SESSION['userid'];
+$user_id = $_SESSION['u_id'];
 if ($post_type == 'passenger') {
-    ?>
+?>
 
     <form method="post">
         Number of passengers:
@@ -274,11 +278,14 @@ if (isset($_POST['ok_passenger_info'])) {
 
 
 
-	<?php
-// $car_type = $_GET['car_type'];
-    // $sql_insert_post = "INSERT INTO DriverPosts
-    // (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, carType)
-    // VALUES ($post_id, $depature_date, $proposed_price, TRUE, $depature_placeid, $destination_placeid, $user_id, $car_type)";
+<?php
+    if (isset($_POST['ok_car_type'])) {
+        $car_type = $_POST['car_type'];
+
+        // $sql_insert_post = "INSERT INTO DriverPosts
+        // (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, carType)
+        // VALUES ($post_id, $depature_date, $proposed_price, TRUE, $depature_placeid, $destination_placeid, $user_id, $car_type)";
+    }
 }
 ?>
 
@@ -286,28 +293,17 @@ if (isset($_POST['ok_passenger_info'])) {
 		<input class="btn waves-effect waves-light" type="submit" name="submit_post" value="submit_post"/>
 	</p>
 
-	<?php
+<?php
 // if ($_POST['submit_post']) {
 //     mysql_query( $sql_insert_post, $conn);
 // }
 echo "Your post has been submitted!";
 ?>
 
-
-
-
-
-    <!-- <div class="card">
-        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-        <div class="container">
-            <h4><b>John Doe</b></h4>
-            <p>Architect & Engineer</p>
-        </div>
-    </div> -->
-</div>
+    </div>
 </body>
 
-<script type="text/javascript" src="materialize.js"></script>
+<!-- <script type="text/javascript" src="materialize.js"></script>
 <script language=JavaScript>
         console.log("reach javascript.");
         var limit = 1;
@@ -329,7 +325,7 @@ echo "Your post has been submitted!";
         $(document).ready(function(){
             $('select').formSelect();
         });
-    </script>
+    </script> -->
 
 
 </html>

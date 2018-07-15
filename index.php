@@ -11,6 +11,7 @@ include_once 'conn.php';
 <head>
     <title>Roadtrip</title>
     <link rel="stylesheet" href="materialize.css"/>
+
 </head>
 
 <body>
@@ -41,6 +42,7 @@ if (isset($_SESSION['u_id'])) {
     <i class="material-icons">new Post</i>
   </a>
 </div>
+
 
 </body>
 </html>

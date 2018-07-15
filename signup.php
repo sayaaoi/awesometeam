@@ -3,7 +3,11 @@
 
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="materialize.css">
+	<link rel="stylesheet" type="text/css" href="materialize.css">
+	<script src="js/libs/jquery.min.js" type="text/javascript"></script>
+    <script src="materialize.js" type="text/javascript"></script>
+
+	
 </head>
 
 <body>
@@ -17,11 +21,6 @@
             <label for="user_name" class="label">Your name</label>
             <input type="text" name="user_name" id="user_name" class="input-field">
         </div>
-
-        <!-- <div class="input-field">
-            <label for="last_name" class="label">Last name</label>
-            <input type="text" name="last_name" id="last_name" class="input-field">
-        </div> -->
 
         <div class="input-field">
             <label for="user_email" class="label">Email address</label>
