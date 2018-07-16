@@ -15,24 +15,21 @@
 <body>
     <script>
             let post_id = localStorage.getItem("postID");
-            // alert ("get post id" + post_id);
             document.cookie="postID="+post_id;
 
     </script>
+
+    <script>
+        function getDepature(clicked_id) {
+            document.cookie="edit_depa="+clicked_id;
+        }
+        function getDestination(clicked_id) {
+            document.cookie="dest="+clicked_id;
+        }
+    </script>
     <div class="container">
 
-    <form action="#" method="post">
-        <div class="row">
-            <div class="input-field col s6">
-                    <label for="depature" class="label">Depature:</label>
-                    <input id="depature" name="depature" type="text" class="input-field" method="get"/>
-                    <!-- <input type="text" name="user_name" id="user_name" class="input-field"> -->
-            </div>
-            <div class="input-field col s6">
-                <button class="btn waves-effect waves-light" type="submit" name="ok_depature">OK</button>
-            </div>
-        </div>
-    </form>
+ 
 
 <?php
 session_start();
@@ -55,290 +52,299 @@ $post_id = $_COOKIE['postID'];
 
 $user_id = $_SESSION['u_id'];
 
-$sql_post = "SELECT * FROM PassengerPosts WHERE postID = '$post_id'";
-// $sql_post = "SELECT * FROM PassengerPosts, DriverPosts WHERE userID = '$user_id'";
+$sql_post_p = "SELECT * FROM PassengerPosts WHERE postID = '$post_id'";
+// $sql_post_d = "SELECT * FROM DriverPosts WHERE userID = '$user_id'";
 
-$result = mysqli_query($conn, $sql_post);
+$result_p = mysqli_query($conn, $sql_post_p);
+// $result_d = mysqli_query($conn, $sql_post_d);
 if (!$result) {
     printf("Error: %s\n", mysqli_error($conn));
     // exit();
 }
-$postResult = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+$postResult;
+$post_type;
+
+$passenger_num;
+$luggage_num;
+$car_type; 
+if ($result_p) {
+    $postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC);
+    $post_type = 'PassengerPosts';
+    $passenger_num = $postResult['passengerNum'];
+    $luggage_num = $postResult['luggageNum'];
+} 
+// else if ($result_d) {
+//     $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC);
+    // $post_type = 'DriverPosts';
+    // $car_type = $postResult['carType'];
+// }
+else {
+    printf("Error: %s\n cannot find data!");
+}
 
 $depature_id = $postResult['startPlaceID'];
 $destination_id = $postResult['endPlaceID'];
 $depature_date = $postResult['date'];
 $proposed_price = $postResult['proposedPrice'];
-//TODO:
-$post_type = '';
-
-// $passenger_num ;
-// $luggage_num ;
-
-// $car_type ;
-
-$sql_update_post ;
 
 
 
-if (isset($_POST['ok_depature'])) {
-    $got_place_input = $_POST['depature'];
-    $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
-    $result = mysqli_query($conn, $sql_place);
-    if (!$result) {
-        printf("Error: %s\n", mysqli_error($conn));
-        // exit();
-    }
 
-    $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // echo count($placeResult);
+$sql_update_post = '';
 
-    $x = 0;
-    // while ($arrayResult = mysql_fetch_array($place_result)) {
-    foreach ($placeResult as $value) {
+// <div class="row">
+//                 <div class="col s12 m6">  </div>
+//                 </div>
 
-        // echo "alter_depature" . $x;
-        //TODO: not transfer text to uppercase
-        echo '<button class="btn-flat" onclick="getDepature(this.id)" id="' . $value['id'] .
-            '" value="alter_depature' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </button><br>';
+//TODO: show places' name
+   echo '   <div class="card">
+                        <div class="card-content">
+                            <p>Post ID: '.$post_id.'</p>
+                            <p>Depature: '.$depature_id.'</p>
+                            <p>Destination: '.$destination_id.'</p>
+                            <p>Depature Date: '.$depature_date.'</p>
+                            <p>Porposed Price: '.$proposed_price.'</p>
+                        </div> 
+            </div>';
 
-        $x++;
-    }
-    // echo ' <button class="btn waves-effect waves-light" type="submit" name="ok_depature_final">OK</button>';
+            echo '  
+            <form action="#" method="post">
+            <fieldset>
+            <legend>Which one do you want to edit?</legend>
+            <p>
+                <label>
+                    <input type="checkbox" name="post_edit" value="depa_place"/>
+                    <span>Depature</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" name="post_edit" value="dest_place"/>
+                    <span>Destination</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" name="post_edit" value="depa_date"/>
+                    <span>Depature date</span>
+                </label>
+            </p>
+            <p>
+            <label>
+                <input type="checkbox" name="post_edit" value="pro_price"/>
+                <span>Proposed price</span>
+            </label>
+            </p>
+            <button class="btn waves-effect waves-light" type="submit" name="ok_edit_choice">OK</button>
+            </fieldset>
+           
+        </form>';
+    $post_edit = '';
+        if (isset($_POST['ok_edit_choice'])) {
 
-}
+            $post_edit = $_POST['post_edit'];
+            if (!empty($post_edit)) {
+                // Counting number of checked checkboxes.
+                echo "You have selected following option: <br/>";
+            } else {
+                echo "<b>Please Select At least One Option.</b>";
+            }
+        }
+        if ($post_edit == 'depa_place')  {
 
 ?>
-    <script>
-        function getDepature(clicked_id) {
+    <form action="#" method="post">
+        <div class="row">
+            <div class="input-field col s6">
+                    <label for="edit_depa" class="label">Depature: <?php echo $depature_id;?></label>
+                    <input id="edit_depa" name="edit_depa" type="text" class="input-field" method="get"/>
+            </div>
+            <div class="input-field col s6">
+                <button class="btn waves-effect waves-light" type="submit" name="ok_edit_depa">OK</button>
+            </div>
+        </div>
+    </form>
+<?php
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById(clicked_id).innerHTML = this.responseText;
-                    alert('myFunction and ajax works!'+clicked_id);
-                }
-            };
-            // window.location.href=window.location+"?depa="+clicked_id;
-            document.cookie="depa="+clicked_id;
+        } 
 
-            // xmlhttp.open("GET", "newpost.php?depa=" + clicked_id, true);
-            xmlhttp.send();
+
+        if (isset($_POST['ok_edit_depa'])) {
+            $got_place_input = $_POST['edit_depa'];
+            $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
+            $result = mysqli_query($conn, $sql_place);
+            if (!$result) {
+                printf("Error: %s\n", mysqli_error($conn));
+            }
+
+            $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+            $x = 0;
+            echo "<form method = 'post'>";
+
+            foreach ($placeResult as $value) {
+
+                //TODO: not transfer text to uppercase
+                echo '<a href="#" onclick="getDepature(this.id)" id="' . $value['id'] .
+                    '" value="alter_depature' . $x .
+                    '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
+
+                $x++;
+            }
+            echo '<button class="btn-flat" type="submit">ok</button></form>';
+
         }
 
-    </script>
+        if (isset($_COOKIE['edit_depa'])) {
+            $destination_id = $_COOKIE['edit_depa'];
+
+            $sql_update_post = "UPDATE $post_type
+            SET startPlaceID = '$depature_id' 
+            WHERE postID = '$post_id'";
+           
+            if (mysqli_query($conn, $sql_update_post)) {
+                echo "Edit post successfully";
+            } else {
+                echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+            }
+        }
+
+
+        if ($post_edit == 'dest_place') {
+?>
+
+    <form action="#" method="post">
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="edit_dest" class="label">Destination: <?php echo $destination_id;?></label>
+                <input id="edit_dest" name="edit_dest" type="text" class="input" method="get"/>
+            </div>
+            <div class="input-field col s6">
+                <button class="btn waves-effect waves-light" type="submit" name="ok_edit_dest">OK</button>
+            </div>
+        </div>
+    </form>
+
 
 <?php
-if (isset($_COOKIE['depa'])) {
+
+        }
+
+
+        if (isset($_POST['ok_edit_dest'])) {
+
+            $got_place_input = $_POST['edit_dest'];
+
+            $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
+            $result = mysqli_query($conn, $sql_place);
+
+            if (!$result) {
+                printf("Error: %s\n", mysqli_error($conn));
+                // exit();
+            }
+
+            $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+            $x = 0;
+            echo "<form method = 'post'>";
+            foreach ($placeResult as $value) {
+
+                echo '<a href="#" class="btn-flat" onclick="getDestination(this.id)" id="' . $value['id'] .
+                    '" value="alter_destination' . $x .
+                    '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
+                $x++;
+            }
+            echo '<button class="btn-flat" type="submit">ok</button></form>';
+        }
+
+        if (isset($_COOKIE['edit_dest'])) {
  
-    $depature_id = $_COOKIE['depa'];
-}
-?>
+            $destination_id = $_COOKIE['edit_dest'];
 
-    <form action="#" method="post">
-        <div class="row">
-            <div class="input-field col s6">
-                <label for="destination" class="label">Destination:</label>
-                <input id="destination" name="destination" type="text" class="input" method="get"/>
-            </div>
-            <div class="input-field col s6">
-                <button class="btn waves-effect waves-light" type="submit" name="ok_destination">OK</button>
-            </div>
-        </div>
-    </form>
-
-   <script>
-        function getDestination(clicked_id) {
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById(clicked_id).innerHTML = this.responseText;
-                    alert('getDestination and ajax works!'+clicked_id);
-                }
-            };
-            // window.location.href=window.location+"?dest="+clicked_id;
-
-            document.cookie="dest="+clicked_id;
-
-            // xmlhttp.open("GET", "newpost.php?dest=" + clicked_id, true);
-            // xmlhttp.send();
+            $sql_update_post = "UPDATE $post_type
+            SET endPlaceID = '$destination_id' 
+            WHERE postID = '$post_id'";
+           
+            if (mysqli_query($conn, $sql_update_post)) {
+                echo "Edit post successfully";
+            } else {
+                echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+            }
         }
 
-    </script>
-<?php
-
-if (isset($_POST['ok_destination'])) {
-
-    $got_place_input = $_POST['destination'];
-
-    // echo $_POST['destination'];
-    $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
-    $result = mysqli_query($conn, $sql_place);
-
-    if (!$result) {
-        printf("Error: %s\n", mysqli_error($conn));
-        // exit();
-    }
-
-    $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-    $x = 0;
-    foreach ($placeResult as $value) {
-
-        // echo $x;
-        // echo "alter_destination" . $x;
-        echo '<button class="btn-flat" onclick="getDestination(this.id)" id="' . $value['id'] .
-            '" value="alter_destination' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </button><br>';
-
-        $x++;
-    }
-    // echo ' <button class="btn waves-effect waves-light" type="submit" name="ok_depature_final">OK</button>';
-
-    // echo "</form>";
-}
-
-?>
-
-<?php
-if (isset($_COOKIE['dest'])) {
-
-    $destination_id = $_COOKIE['dest'];
-}
-?>
-
-
-    <form action="#" method="post">
-        <p>
-            <label>
-                <input type="checkbox" name="post_type" value="passenger"/>
-                <span>I am a passenger.</span>
-            </label>
-        </p>
-        <p>
-            <label>
-                <input type="checkbox" name="post_type" value="driver"/>
-                <span>I am a driver.</span>
-            </label>
-        </p>
-        <button class="btn waves-effect waves-light" type="submit" name="ok_post_type">OK</button>
-    </form>
-
-
-
-
-<?php
-if (isset($_POST['ok_post_type'])) {
-    $post_type = $_POST['post_type'];
-    if (!empty($_POST['post_type'])) {
-        // Counting number of checked checkboxes.
-        echo "You have selected following option: <br/>";
-        echo $post_type;
-    } else {
-        echo "<b>Please Select Atleast One Option.</b>";
-    }
-}
-
-if ($post_type == 'passenger') {
+        if ($post_edit == 'depa_date') {
 ?>
 
     <form action="#" method="post">
         <div class="row">
             <div class="col s12">
-                <label for="depature_date">Depature Date</label>
-                <input id="depature_date" name="depature_date" type="date" class="input">
+                <label for="edit_date">Depature Date: <?php echo $depature_date;?></label>
+                <input id="edit_date" name="edit_date" type="date" class="input">
             </div>
-        </div>
-        <!-- <div class="row"> -->
-            <div class="input-field col s6">
-                <label for="proposed_price" class="label">Price:</label>
-                <input id="proposed_price" name="proposed_price" type="text" class="input"/>
-            </div>
-            <!-- <div class="input-field col s6">
-                <button class="btn waves-effect waves-light" type="submit" name="ok_price">OK</button>
-            </div> -->
-        Number of passengers:
-        <input type="number" name="passenger_num" min="1" max="100" step="1" value="1">
-        Number of luggages:
-        <input type="number" name="luggage_num" min="0" max="100" step="1" value="0">
-        <button class="btn waves-effect waves-light" type="submit" name="ok_passenger_info">OK</button>
-	</form>
-
-
-<?php
-   
-} else if ($post_type == 'driver'){ //this is a driver post.
-?>
-
-	<form action="#" method="post">
-        <div class="row">
-            <div class="col s12">
-                <label for="depature_date">Depature Date</label>
-                <input id="depature_date" name="depature_date" type="date" class="input">
-            </div>
-        </div>
-            <div class="input-field col s6">
-                <label for="proposed_price" class="label">Price:</label>
-                <input id="proposed_price" name="proposed_price" type="text" class="input"/>
-            </div>
-        <div class="row">
-            <div class="input-field col s6">
-                <label for="car_type" class="label">Your car type:</label>
-                <input id="car_type" name="car_type" type="text" class="input" />
-            </div>
-            <div class="input-field col s6">
-                <button class="btn waves-effect waves-light" type="submit" name="ok_car_type">OK</button>
-            </div>
-        </div>
-
-    </form>
-
-
-
-<?php
-}
-
-
-    if (isset($_POST['ok_passenger_info'])) {
-        $passenger_num = $_POST['passenger_num'];
-        $luggage_num = $_POST['luggage_num'];
-        $depature_date = $_POST['depature_date'];
-        $proposed_price = $_POST['proposed_price'];
-
-        $sql_insert_post = "INSERT INTO PassengerPosts
-        (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
-        VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
-        $passenger_num, $luggage_num)";
-
-        echo $depature_date;
-        echo $sql_insert_post;
-        if (mysqli_query($conn, $sql_insert_post)) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
-        }
         
-    }
-   
-    
-    if (isset($_POST['ok_car_type'])) {
-        $car_type = $_POST['car_type'];
-        $depature_date = $_POST['depature_date'];
-        $proposed_price = $_POST['proposed_price'];
-        //TODO
-        $sql_insert_post = "INSERT INTO DriverPosts
-        (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, carType)
-        VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
-        '$car_type')";
-        echo $sql_insert_post;
-        if (mysqli_query($conn, $sql_insert_post)) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+            <div class="input-field col s12">
+                <button class="btn waves-effect waves-light" type="submit" name="ok_edit_date">OK</button>
+            </div>
+        </div>
+    </form>
+       
+
+<?php
         }
-    }
+
+        if (isset($_POST['ok_edit_date'])) {
+ 
+            $depature_date = $_POST['edit_date'];
+
+            $sql_update_post = "UPDATE $post_type
+            SET date = '$depature_date' 
+            WHERE postID = '$post_id'";
+           
+            if (mysqli_query($conn, $sql_update_post)) {
+                echo "Edit post successfully";
+            } else {
+                echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+            }
+        }
+
+        if ($post_edit == 'pro_price') {
+?>
+    <form action="#" method="post">
+
+        <div class="row">
+            <div class="input-field col s6">
+                <label for="edit__price" class="label">Price: <?php echo $proposed_price;?></label>
+                <input id="edit__price" name="edit__price" type="text" class="input"/>
+            </div>
+            <div class="input-field col s6">
+                <button class="btn waves-effect waves-light" type="submit" name="ok_edit_price">OK</button>
+            </div>
+        </div>
+
+    </form>
+
+
+
+<?php
+
+        }
+
+        if (isset($_POST['ok_edit_price'])) {
+ 
+            $proposed_price = $_POST['edit_price'];
+
+            $sql_update_post = "UPDATE $post_type
+            SET proposedPrice = '$proposed_price' 
+            WHERE postID = '$post_id'";
+           
+            if (mysqli_query($conn, $sql_update_post)) {
+                echo "Edit post successfully";
+            } else {
+                echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+            }
+        }
+//TODO: submit successfully reminder appear at wrong time
 ?>
 
 
@@ -362,8 +368,10 @@ if (isset($_POST['ok_post'])) {
 ?>
     
     <script>
-        alert('Are you sure to discard this post?');
-        window.location.href = "index.php";
+        var retVal = confirm("Are you sure to discard this edition?");
+        if( retVal == true ){
+            window.location.href = "myaccount.php";
+        }
     </script>
     
 <?php

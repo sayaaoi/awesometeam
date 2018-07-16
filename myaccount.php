@@ -122,6 +122,30 @@ if (isset($_SESSION['u_id'])) {
             window.location.href = "editpost.php";
 
         }
+        function deletePost(clicked_id) {
+
+            // alert('Are you sure to delete this post?');
+            if (getConfirmation()) {
+
+
+            } else {
+
+            }
+            // window.location.href = "editpost.php";
+
+        }
+
+        function getConfirmation(){
+            var retVal = confirm("Are you sure to delete this post?");
+            if( retVal == true ){
+                // document.write ("User wants to continue!");
+                return true;
+            }
+            else{
+                // document.write ("User does not want to continue!");
+                return false;
+            }
+        }
 
     </script>
 
@@ -248,8 +272,7 @@ foreach ($postResult as $value) {
     echo '  <div class="row">
                 <div class="col s12 m6">
                     <div class="card">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="'.$value['postID'].'">
-                        <i class="tiny material-icons">edit</i></a>
+                      
                         <div class="card-content">
                             <p>Post ID: '.$value['postID'].'</p>
                             <p>Depature: '.$depa_name.'</p>
@@ -257,9 +280,15 @@ foreach ($postResult as $value) {
                             <p>Depature Date: '.$value['date'].'</p>
                             <p>Porposed Price: '.$value['proposedPrice'].'</p>
                         </div>
+                        <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="'.$value['postID'].'">
+                        <i class="tiny material-icons">edit</i></a>
+                        <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="'.$value['postID'].'">
+                        <i class="tiny material-icons">delete</i></a>
                     </div>
                 </div>
             </div>';
+            
+
 //   <div class="card-image">
 // </div>
   //   <span class="card-title">'.$user_name.'</span>

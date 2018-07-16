@@ -99,37 +99,27 @@ if (isset($_POST['ok_depature'])) {
     // echo count($placeResult);
 
     $x = 0;
-    // while ($arrayResult = mysql_fetch_array($place_result)) {
+    echo "<form method = 'post'>";
     foreach ($placeResult as $value) {
 
         // echo "alter_depature" . $x;
         //TODO: not transfer text to uppercase
-        echo '<button class="btn-flat" onclick="getDepature(this.id)" id="' . $value['id'] .
+        echo '<a href="#"  onclick="getDepature(this.id)" id="' . $value['id'] .
             '" value="alter_depature' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </button><br>';
+            '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
 
         $x++;
     }
-    // echo ' <button class="btn waves-effect waves-light" type="submit" name="ok_depature_final">OK</button>';
-
+    echo '<button class="btn-flat" type="submit">ok</button></form>';
 }
 
 ?>
     <script>
         function getDepature(clicked_id) {
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById(clicked_id).innerHTML = this.responseText;
-                    alert('myFunction and ajax works!'+clicked_id);
-                }
-            };
-            // window.location.href=window.location+"?depa="+clicked_id;
             document.cookie="depa="+clicked_id;
-
-            // xmlhttp.open("GET", "newpost.php?depa=" + clicked_id, true);
-            xmlhttp.send();
+            document.getElementById(clicked_id).style.color = "red";
+            // alert ("depa="+clicked_id);
         }
 
     </script>
@@ -156,19 +146,8 @@ if (isset($_COOKIE['depa'])) {
    <script>
         function getDestination(clicked_id) {
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // document.getElementById(clicked_id).innerHTML = this.responseText;
-                    alert('getDestination and ajax works!'+clicked_id);
-                }
-            };
-            // window.location.href=window.location+"?dest="+clicked_id;
-
             document.cookie="dest="+clicked_id;
 
-            // xmlhttp.open("GET", "newpost.php?dest=" + clicked_id, true);
-            // xmlhttp.send();
         }
 
     </script>
@@ -190,19 +169,17 @@ if (isset($_POST['ok_destination'])) {
     $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     $x = 0;
+    echo "<form method = 'post'>";
+
     foreach ($placeResult as $value) {
 
-        // echo $x;
-        // echo "alter_destination" . $x;
-        echo '<button class="btn-flat" onclick="getDestination(this.id)" id="' . $value['id'] .
+        echo '<a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
             '" value="alter_destination' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </button><br>';
+            '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
 
         $x++;
     }
-    // echo ' <button class="btn waves-effect waves-light" type="submit" name="ok_depature_final">OK</button>';
-
-    // echo "</form>";
+    echo '<button class="btn-flat" type="submit">ok</button></form>';
 }
 
 ?>
@@ -242,7 +219,7 @@ if (isset($_POST['ok_post_type'])) {
         echo "You have selected following option: <br/>";
         echo $post_type;
     } else {
-        echo "<b>Please Select Atleast One Option.</b>";
+        echo "<b>Please Select At least One Option.</b>";
     }
 }
 
@@ -367,8 +344,11 @@ if (isset($_POST['ok_post'])) {
 ?>
     
     <script>
-        alert('Are you sure to discard this post?');
-        window.location.href = "index.php";
+
+        var retVal = confirm("Are you sure to discard this post?");
+        if( retVal == true ){
+            window.location.href = "index.php";
+        }
     </script>
     
 <?php
