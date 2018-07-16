@@ -11,7 +11,7 @@ include_once 'conn.php';
 <head>
     <title>Roadtrip</title>
     <link rel="stylesheet" href="materialize.css"/>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -37,11 +37,68 @@ if (isset($_SESSION['u_id'])) {
     </div>
 </nav>
 <div class="fixed-action-btn">
-  <a class="btn-floating btn-large red" href = "newpost.php">
-      
-    <i class="material-icons">new Post</i>
-  </a>
+    <a class="btn-floating btn-large red" href = "newpost.php">
+        <i class="material-icons">add</i>
+    </a>
 </div>
+
+<?php
+
+//TODO: Simplify mysql query
+$sql_post = "SELECT * FROM PassengerPosts";
+$result = mysqli_query($conn, $sql_post);
+if (!$result) {
+    printf("Error: %s\n", mysqli_error($conn));
+    // exit();
+}
+
+$postResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+// echo count($placeResult);
+
+$x = 0;
+// while ($arrayResult = mysql_fetch_array($place_result)) {
+foreach ($postResult as $value) {
+
+    $depa_id = $value['startPlaceID'];
+
+    $sql_depa_name = "SELECT * FROM places WHERE id = '$depa_id'";
+    $depa_result = mysqli_query($conn, $sql_depa_name);
+    if (!$depa_result) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $depaResult = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+    $depa_name = $depaResult['name'];
+
+    $dest_id = $value['endPlaceID'];
+
+    $sql_dest_name = "SELECT * FROM places WHERE id = '$dest_id'";
+    $dest_result = mysqli_query($conn, $sql_dest_name);
+    if (!$dest_result) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+    $dest_name = $destResult['name'];
+
+
+    echo '  <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <p>Depature: '.$depa_name.'</p>
+                            <p>Destination: '.$dest_name.'</p>
+                            <p>Depature Date: '.$value['date'].'</p>
+                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+
+}
+?>
 
 
 </body>

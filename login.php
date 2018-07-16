@@ -4,6 +4,9 @@
 <head>
     <title>User Log In</title>
     <link rel="stylesheet" href="materialize.css"/>
+    <script src="js/libs/jquery.min.js" type="text/javascript"></script>
+    <script src="materialize.js" type="text/javascript"></script>
+
 </head>
 
 <body>
