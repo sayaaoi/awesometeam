@@ -37,6 +37,13 @@
         </div>
 
     </form>
+    <br>
+
+    <form class="form" action="#" method="post">
+
+    <button class="btn waves-effect waves-light" type="submit" name="cancel_signup">cancel</button>
+    </form>
+
 	</div>
 
 </body>
@@ -126,7 +133,7 @@ if (isset($_POST['submit_signup'])) //match the button name
             }
         }
     }
-} else {
-    // header("Location: ../signup.php");//default if ppl change the url
-    exit(); //closes the script from running
+} 
+if (isset($_POST['cancel_signup'])) {
+    header("Location: index.php");
 }
