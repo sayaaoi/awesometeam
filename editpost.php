@@ -57,7 +57,7 @@ $sql_post_p = "SELECT * FROM PassengerPosts WHERE postID = '$post_id'";
 
 $result_p = mysqli_query($conn, $sql_post_p);
 // $result_d = mysqli_query($conn, $sql_post_d);
-if (!$result) {
+if (!$result_p) {
     printf("Error: %s\n", mysqli_error($conn));
     // exit();
 }
@@ -365,19 +365,15 @@ if (isset($_POST['ok_post'])) {
 
 <?php
 } else if (isset($_POST['cancel_post'])) {
+    header("Location: myaccount.php");
+}
 ?>
-    
-    <script>
+  <!-- <script>
         var retVal = confirm("Are you sure to discard this edition?");
         if( retVal == true ){
             window.location.href = "myaccount.php";
         }
-    </script>
-    
-<?php
-}
-?>
-
+    </script> -->
     </div>
 </body>
 

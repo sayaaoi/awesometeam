@@ -9,6 +9,11 @@
     <script src="js/libs/jquery.min.js" type="text/javascript"></script>
     <script src="materialize.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++)
+            eraseCookie(cookies[i].split("=")[0]);
+    </script>
 
 </head>
 

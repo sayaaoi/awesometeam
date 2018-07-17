@@ -42,14 +42,19 @@ if (isset($_SESSION['u_id'])) {
         </div>
     </nav>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red" href = "newpost.php">    
+        <a class="btn-floating btn-large red" href = "newpost.php">
     <i class="material-icons">add</i>
     </a>
 
-   
+
 </div>
 
   <script>
+      
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++)
+            eraseCookie(cookies[i].split("=")[0]);
+        alert();
         function editUserName() {
 
             var container = document.getElementById("new_name");
@@ -64,10 +69,10 @@ if (isset($_SESSION['u_id'])) {
             input.type = "text";
             input.name = "get_new_name";
             container.appendChild(input);
-            // Append a line break 
+            // Append a line break
             container.appendChild(document.createElement("br"));
 
-            
+
             // <button class="btn waves-effect waves-light" type="submit" name="ok_new_name">OK</button>
             var name_button = document.getElementById("ok_new_name");
             while (ok_new_name.hasChildNodes()) {
@@ -79,8 +84,8 @@ if (isset($_SESSION['u_id'])) {
             button.name = "ok_new_name_button";
             var t = document.createTextNode("OOOK");
             button.appendChild(t);
-            name_button.appendChild(button); 
-    
+            name_button.appendChild(button);
+
         }
         function editUserEmail() {
 
@@ -96,7 +101,7 @@ if (isset($_SESSION['u_id'])) {
             input.type = "text";
             input.name = "get_new_email";
             container.appendChild(input);
-            // Append a line break 
+            // Append a line break
             container.appendChild(document.createElement("br"));
 
 
@@ -111,7 +116,7 @@ if (isset($_SESSION['u_id'])) {
             button.name = "ok_new_email_button";
             var t = document.createTextNode("OOOK");
             button.appendChild(t);
-            email_button.appendChild(button); 
+            email_button.appendChild(button);
 
         }
 
@@ -123,28 +128,11 @@ if (isset($_SESSION['u_id'])) {
 
         }
         function deletePost(clicked_id) {
-
             // alert('Are you sure to delete this post?');
-            if (getConfirmation()) {
-
-
-            } else {
-
-            }
-            // window.location.href = "editpost.php";
-
-        }
-
-        function getConfirmation(){
             var retVal = confirm("Are you sure to delete this post?");
             if( retVal == true ){
-                // document.write ("User wants to continue!");
-                return true;
-            }
-            else{
-                // document.write ("User does not want to continue!");
-                return false;
-            }
+                document.cookie="del_post_id="+clicked_id;
+            } 
         }
 
     </script>
@@ -153,6 +141,7 @@ if (isset($_SESSION['u_id'])) {
 
 //Connect with database and fetch user profile.
 include_once 'conn.php';
+
 $user_id = $_SESSION['u_id'];
 
 //TODO: update this page right after change user information
@@ -201,13 +190,13 @@ if (isset($_POST['ok_new_name_button'])) {
         if (!$result) {
             printf("Error: %s\n", mysqli_error($conn));
         }
-?>
+        ?>
     <script>
         alert('Change your username successfully!');
     </script>
 
 <?php
-    }
+}
 }
 if (isset($_POST['ok_new_email_button'])) {
     $new_email = $_POST['get_new_email'];
@@ -218,29 +207,30 @@ if (isset($_POST['ok_new_email_button'])) {
             printf("Error: %s\n", mysqli_error($conn));
         }
 
-?>
+        ?>
     <script>
         alert('Change your email successfully!');
     </script>
 
 <?php
-    }
+}
 }
 //TODO: deal with two kinds of posts
-$sql_post = "SELECT * FROM PassengerPosts WHERE userID = '$user_id'";
-// $sql_post = "SELECT * FROM PassengerPosts WHERE userID = '$user_id'";
+$sql_post_p = "SELECT * FROM PassengerPosts WHERE userID = '$user_id'";
+$sql_post_d = "SELECT * FROM DriverPosts WHERE userID = '$user_id'";
 
-$result = mysqli_query($conn, $sql_post);
-if (!$result) {
+$result_p = mysqli_query($conn, $sql_post_p);
+$result_d = mysqli_query($conn, $sql_post_d);
+if (!$result_p || !$result_d) {
     printf("Error: %s\n", mysqli_error($conn));
     // exit();
 }
 
-$postResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
+$postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
 
 $x = 0;
-foreach ($postResult as $value) {
-
+foreach ($postResult_p as $value) {
 
     //TODO: Simplify mysql query
 
@@ -268,30 +258,114 @@ foreach ($postResult as $value) {
     $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
     $dest_name = $destResult['name'];
 
-
     echo '  <div class="row">
                 <div class="col s12 m6">
                     <div class="card">
-                      
+
                         <div class="card-content">
-                            <p>Post ID: '.$value['postID'].'</p>
-                            <p>Depature: '.$depa_name.'</p>
-                            <p>Destination: '.$dest_name.'</p>
-                            <p>Depature Date: '.$value['date'].'</p>
-                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
+                            <p>Post ID: ' . $value['postID'] . '</p>
+                            <p>Depature: ' . $depa_name . '</p>
+                            <p>Destination: ' . $dest_name . '</p>
+                            <p>Depature Date: ' . $value['date'] . '</p>
+                            <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
                         </div>
-                        <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="'.$value['postID'].'">
+                        <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
                         <i class="tiny material-icons">edit</i></a>
-                        <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="'.$value['postID'].'">
+                        <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
                         <i class="tiny material-icons">delete</i></a>
                     </div>
                 </div>
             </div>';
-            
 
-//   <div class="card-image">
-// </div>
-  //   <span class="card-title">'.$user_name.'</span>
+}
+
+foreach ($postResult_d as $value) {
+
+    //TODO: Simplify mysql query
+
+    $depa_id = $value['startPlaceID'];
+
+    $sql_depa_name = "SELECT * FROM places WHERE id = '$depa_id'";
+    $depa_result = mysqli_query($conn, $sql_depa_name);
+    if (!$depa_result) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $depaResult = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+    $depa_name = $depaResult['name'];
+
+    $dest_id = $value['endPlaceID'];
+
+    $sql_dest_name = "SELECT * FROM places WHERE id = '$dest_id'";
+    $dest_result = mysqli_query($conn, $sql_dest_name);
+    if (!$dest_result) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+    $dest_name = $destResult['name'];
+
+    echo '  <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+
+                        <div class="card-content">
+                            <p>Post ID: ' . $value['postID'] . '</p>
+                            <p>Depature: ' . $depa_name . '</p>
+                            <p>Destination: ' . $dest_name . '</p>
+                            <p>Depature Date: ' . $value['date'] . '</p>
+                            <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
+                        </div>
+                        <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
+                        <i class="tiny material-icons">edit</i></a>
+                        <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
+                        <i class="tiny material-icons">delete</i></a>
+                    </div>
+                </div>
+            </div>';
+
+}
+if (isset($_COOKIE['del_post_id'])) {
+    // echo "got the cookie";
+    $del_post_id = $_COOKIE['del_post_id'];
+
+    $sql_post_p = "SELECT * FROM PassengerPosts WHERE postID = '$del_post_id'";
+    $sql_post_d = "SELECT * FROM DriverPosts WHERE postID = '$del_post_id'";
+
+    $result_p = mysqli_query($conn, $sql_post_p);
+    $result_d = mysqli_query($conn, $sql_post_d);
+    if (!$result_p || !$result_d) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $postResult;
+    $post_type;
+
+    if ($result_p) {
+        $postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC);
+        $post_type = 'PassengerPosts';
+        $passenger_num = $postResult['passengerNum'];
+        $luggage_num = $postResult['luggageNum'];
+    }
+    else if ($result_d) {
+        $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC);
+    $post_type = 'DriverPosts';
+    $car_type = $postResult['carType'];
+    }
+    else {
+        printf("Error: %s\n cannot find data!");
+    }
+    $sql_delete = "DELETE FROM $post_type
+    WHERE postID = '$del_post_id'";
+
+    if (!mysqli_query($conn, $sql_delete)) {
+    
+        echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+    }
+  
 }
 echo '</body>';
 echo '</html>';

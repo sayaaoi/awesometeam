@@ -45,19 +45,68 @@ if (isset($_SESSION['u_id'])) {
 <?php
 
 //TODO: Simplify mysql query
-$sql_post = "SELECT * FROM PassengerPosts";
-$result = mysqli_query($conn, $sql_post);
-if (!$result) {
+$sql_post_p = "SELECT * FROM PassengerPosts";
+$sql_post_d = "SELECT * FROM DriverPosts";
+$result_p = mysqli_query($conn, $sql_post_p);
+$result_d = mysqli_query($conn, $sql_post_d);
+if (!$result_p || !$result_d) {
     printf("Error: %s\n", mysqli_error($conn));
     // exit();
 }
 
-$postResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
 // echo count($placeResult);
 
 $x = 0;
 // while ($arrayResult = mysql_fetch_array($place_result)) {
-foreach ($postResult as $value) {
+foreach ($postResult_p as $value) {
+
+    $depa_id = $value['startPlaceID'];
+
+    $sql_depa_name = "SELECT * FROM places WHERE id = '$depa_id'";
+    $depa_result = mysqli_query($conn, $sql_depa_name);
+    if (!$depa_result) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $depaResult = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+    $depa_name = $depaResult['name'];
+
+    $dest_id = $value['endPlaceID'];
+
+    $sql_dest_name = "SELECT * FROM places WHERE id = '$dest_id'";
+    $dest_result = mysqli_query($conn, $sql_dest_name);
+    if (!$dest_result) {
+        printf("Error: %s\n", mysqli_error($conn));
+        // exit();
+    }
+
+    $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+    $dest_name = $destResult['name'];
+
+
+    echo '  <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <p>Depature: '.$depa_name.'</p>
+                            <p>Destination: '.$dest_name.'</p>
+                            <p>Depature Date: '.$value['date'].'</p>
+                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+
+}
+
+$postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
+// echo count($placeResult);
+
+$x = 0;
+// while ($arrayResult = mysql_fetch_array($place_result)) {
+foreach ($postResult_d as $value) {
 
     $depa_id = $value['startPlaceID'];
 
