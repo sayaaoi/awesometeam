@@ -1,3 +1,4 @@
+				
 <!DOCTYPE html>
 <html>
 
@@ -19,7 +20,7 @@
 
         <div class="input-field">
             <label for="user_name" class="label">Your name</label>
-            <input type="text" name="user_name" id="user_name" class="input-field">
+            <input type="text" name="user_name" id="user_name" class="input-field" required>
         </div>
 
         <div class="input-field">
@@ -29,7 +30,7 @@
 
         <div class="input-field">
             <label for="user_password" class="label">Password</label>
-            <input type="text" name="user_password" id="user_password" class="input-field" required>
+            <input type="text" name="user_password" id="user_password" class="input-field" autocomplete="off" required>
         </div>
 
         <div>
@@ -54,23 +55,16 @@
 
 if (isset($_POST['submit_signup'])) //match the button name
 {
-	echo "start";
+	// echo "start";
     include_once 'conn.php';
     //get data from the form
-    // $user_first = mysqli_real_escape_string($conn, $_POST['user_first']); //matches signup form
-    // $user_last = mysqli_real_escape_string($conn, $_POST['user_last']); //matches signup form
     $user_email = mysqli_real_escape_string($conn, $_POST['user_email']); //matches signup form
     $user_name = mysqli_real_escape_string($conn, $_POST['user_name']); //matches signup form
     $user_password = mysqli_real_escape_string($conn, $_POST['user_password']); //matches signup form
 
-	echo $user_name.'<br>';
-	echo $user_email.'<br>';
-	echo $user_password.'<br>';
     //Error handlers
     //check for empty fields
-    // if (empty($user_first) || empty($user_last) || empty($user_email) || empty($user_uid)) {
     if (empty($user_name) || empty($user_email) || empty($user_password)) {
-
         header("Location: ../signup.php?signup=empty"); //add error message
         exit();
     } else {
@@ -88,9 +82,13 @@ if (isset($_POST['submit_signup'])) //match the button name
                 header("Location: ../signup.php?signup=email");
                 exit();
             } else {
-              	echo "email is valid";
+              	// echo "email is valid";
                 $sql = "SELECT * FROM Users WHERE name='$user_name'"; //create query
                 $result = mysqli_query($conn, $sql); //make query
+
+                if (!$result) {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
                 $resultCheck = mysqli_num_rows($result); //check if we got any rows in result
 
                 if ($resultCheck > 0) {
@@ -104,8 +102,11 @@ if (isset($_POST['submit_signup'])) //match the button name
 						$user_id = uniqid('user_'); //generate a random post id
 						echo $user_id;
 				
-						$sql_check_post_id = "SELECT * FROM users WHERE id = '$user_id'";
-						$same_id = mysqli_query($conn, $sql_check_user_id);
+						$sql_check_user_id = "SELECT * FROM Users WHERE id = '$user_id'";
+                        $same_id = mysqli_query($conn, $sql_check_user_id);
+                        if (!$same_id) {
+                            echo "Error: " . $sql_check_user_id . "<br>" . $conn->error;
+                        }
 						$num_same_id = mysqli_num_rows($same_id);
 						if ($num_same_id == 0) {
 							$get_valid_id = true;
@@ -121,12 +122,18 @@ if (isset($_POST['submit_signup'])) //match the button name
                     // $hash = md5(rand(0, 1000)); //activation hash
                     // $password = rand(100000, 999999); //temp password
                     //Insert the user into the database
-                    $sql = "INSERT INTO Users (id, name, email, password/*, password, hash*/) VALUES ('$user_id', '$user_name', '$user_email', '$user_password'/*, '$password', '$hash'*/);";
+                    $sql = "INSERT INTO Users (id, name, email, password) VALUES ('$user_id', '$user_name', '$user_email', '$user_password');";
 
-                    mysqli_query($conn, $sql); //insert user data into the database
+                    if (mysqli_query($conn, $sql)) {
+                        echo "New record created successfully";
+                        header("Location: login.php");
+                    } else {
+                        echo "Error: " . $sql . "<br>" . $conn->error;
+                    }
+                   
+                    // mysqli_query($conn, $sql); //insert user data into the database
                     //advenced
 
-                    header("Location: index.php");
 
                     exit();
                 }

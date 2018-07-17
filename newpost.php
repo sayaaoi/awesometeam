@@ -25,7 +25,7 @@
         <div class="row">
             <div class="input-field col s6">
                     <label for="depature" class="label">Depature:</label>
-                    <input id="depature" name="depature" type="text" class="input-field" method="get"/>
+                    <input id="depature" name="depature" type="text" class="input-field" />
                     <!-- <input type="text" name="user_name" id="user_name" class="input-field"> -->
             </div>
             <div class="input-field col s6">
@@ -67,22 +67,21 @@ $get_valid_id = false;
 $post_id = '';
 while (!$get_valid_id) {
     $post_id = uniqid('post_'); //generate a random post id
-    $sql_check_ppost_id = "SELECT * FROM passengerposts WHERE postID = '$post_id'";
-    // $sql_check_dpost_id = "SELECT * FROM passengerposts, Driverposts WHERE postID = '$post_id'";
+    $sql_check_ppost_id = "SELECT * FROM PassengerPosts WHERE postID = '$post_id'";
+    $sql_check_dpost_id = "SELECT * FROM DriverPosts WHERE postID = '$post_id'";
 
     $same_id_p = mysqli_query($conn, $sql_check_ppost_id);
-    // $same_id_d = mysqli_query($conn, $sql_check_dpost_id);
+    $same_id_d = mysqli_query($conn, $sql_check_dpost_id);
 
     if (!$same_id_p) {
         printf("Error: %s\n", mysqli_error($conn));
         // exit();
     }
-    // if (!$same_id_d) {
-    //     printf("Error: %s\n", mysqli_error($conn));
+    if (!$same_id_d) {
+         printf("Error: %s\n", mysqli_error($conn));
     //     // exit();
-    // }
-    $num_same_id = mysqli_num_rows($same_id_p);
-    // +  mysqli_num_rows($same_id_d);
+    }
+    $num_same_id = mysqli_num_rows($same_id_p) + mysqli_num_rows($same_id_d);
     if ($num_same_id == 0) {
         $get_valid_id = true;
     }
@@ -92,17 +91,23 @@ while (!$get_valid_id) {
 // echo $post_id;
 
 if (isset($_POST['ok_depature'])) {
+    echo "got input";
     $got_place_input = $_POST['depature'];
-    $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
+    echo $got_place_input;
+    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
     $result = mysqli_query($conn, $sql_place);
     if (!$result) {
         printf("Error: %s\n", mysqli_error($conn));
         // exit();
     }
 
-    $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // echo count($placeResult);
+    $placeResult = array();
 
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $placeResult[] = $row;
+    }
+    echo count($placeResult);
+    echo "reach this line";
     $x = 0;
     echo "<form method = 'post'>";
     foreach ($placeResult as $value) {
@@ -140,7 +145,7 @@ if (isset($_COOKIE['depa'])) {
         <div class="row">
             <div class="input-field col s6">
                 <label for="destination" class="label">Destination:</label>
-                <input id="destination" name="destination" type="text" class="input" method="get"/>
+                <input id="destination" name="destination" type="text" class="input"/>
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_destination">OK</button>
@@ -151,6 +156,7 @@ if (isset($_COOKIE['depa'])) {
    <script>
         function getDestination(clicked_id) {
 
+            document.getElementById(clicked_id).style.color = "red";
             document.cookie="dest="+clicked_id;
 
         }
@@ -163,7 +169,7 @@ if (isset($_POST['ok_destination'])) {
     $got_place_input = $_POST['destination'];
 
     // echo $_POST['destination'];
-    $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
+    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
     $result = mysqli_query($conn, $sql_place);
 
     if (!$result) {
@@ -171,10 +177,14 @@ if (isset($_POST['ok_destination'])) {
         // exit();
     }
 
-    $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    // $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $placeResult = array();
 
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $placeResult[] = $row;
+    }
     $x = 0;
-    echo "<form method = 'post'>";
+    echo "<form action = '#' method = 'post'>";
 
     foreach ($placeResult as $value) {
 

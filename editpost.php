@@ -21,9 +21,11 @@
 
     <script>
         function getDepature(clicked_id) {
+            document.getElementById(clicked_id).style.color = "red";
             document.cookie="edit_depa="+clicked_id;
         }
         function getDestination(clicked_id) {
+            document.getElementById(clicked_id).style.color = "red";
             document.cookie="dest="+clicked_id;
         }
     </script>
@@ -178,8 +180,12 @@ $sql_update_post = '';
                 printf("Error: %s\n", mysqli_error($conn));
             }
 
-            $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+          //  $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+          $placeResult = array();
 
+          while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+              $placeResult[] = $row;
+          }
             $x = 0;
             echo "<form method = 'post'>";
 
@@ -244,8 +250,12 @@ $sql_update_post = '';
                 // exit();
             }
 
-            $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+         //   $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+         $placeResult = array();
 
+         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+             $placeResult[] = $row;
+         }
             $x = 0;
             echo "<form method = 'post'>";
             foreach ($placeResult as $value) {

@@ -150,7 +150,7 @@ $user_name = $_SESSION['u_name'];
 $user_email = $_SESSION['u_email'];
 $user_password = $_SESSION['u_email'];
 
-$user_query = mysqli_query($conn, "SELECT * FROM users WHERE id='$user_id' limit 1");
+$user_query = mysqli_query($conn, "SELECT * FROM Users WHERE id='$user_id' limit 1");
 $row = mysqli_fetch_array($user_query);
 if (!$user_query) {
     printf("Error: %s\n", mysqli_error($conn));
@@ -185,7 +185,7 @@ echo '<p>Email：', $row['email'], '<a class="btn-flat" onclick="editUserEmail()
 if (isset($_POST['ok_new_name_button'])) {
     $new_name = $_POST['get_new_name'];
     if ($new_name != '') {
-        $sql_change_name = "UPDATE users SET name = '$new_name' WHERE id = '$user_id'";
+        $sql_change_name = "UPDATE Users SET name = '$new_name' WHERE id = '$user_id'";
         $result = mysqli_query($conn, $sql_change_name);
         if (!$result) {
             printf("Error: %s\n", mysqli_error($conn));
@@ -201,7 +201,7 @@ if (isset($_POST['ok_new_name_button'])) {
 if (isset($_POST['ok_new_email_button'])) {
     $new_email = $_POST['get_new_email'];
     if ($new_email != '') {
-        $sql_change_email = "UPDATE users SET email = '$new_email' WHERE id = '$user_id'";
+        $sql_change_email = "UPDATE Users SET email = '$new_email' WHERE id = '$user_id'";
         $result = mysqli_query($conn, $sql_change_email);
         if (!$result) {
             printf("Error: %s\n", mysqli_error($conn));
@@ -226,8 +226,19 @@ if (!$result_p || !$result_d) {
     // exit();
 }
 
-$postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
-$postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
+// $postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
+// $postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
+
+$postResult_p = array();
+
+while ($row = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
+    $postResult_p[] = $row;
+}
+$postResult_d = array();
+
+while ($row = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
+    $postResult_d[] = $row;
+}
 
 $x = 0;
 foreach ($postResult_p as $value) {

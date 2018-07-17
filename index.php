@@ -54,7 +54,12 @@ if (!$result_p || !$result_d) {
     // exit();
 }
 
-$postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
+// $postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
+$postResult_p = array();
+
+while ($row = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
+    $postResult_p[] = $row;
+}
 // echo count($placeResult);
 
 $x = 0;
@@ -101,8 +106,13 @@ foreach ($postResult_p as $value) {
 
 }
 
-$postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
+// $postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
 // echo count($placeResult);
+$postResult_d = array();
+
+while ($row = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
+    $postResult_d[] = $row;
+}
 
 $x = 0;
 // while ($arrayResult = mysql_fetch_array($place_result)) {
