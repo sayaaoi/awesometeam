@@ -165,29 +165,32 @@ if (isset($_COOKIE['depa'])) {
 <?php
 
 if (isset($_POST['ok_destination'])) {
-
-    $got_place_input = $_POST['destination'];
-
+    include 'conn.php';  
+  echo "got input";
+    $got_place_input_e = $_POST['destination'];
+    echo $got_place_input_e;
     // echo $_POST['destination'];
-    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
-    $result = mysqli_query($conn, $sql_place);
+    $sql_place_e = "SELECT * FROM Places WHERE name LIKE '%$got_place_input_e%'";
+    $result_e = mysqli_query($conn, $sql_place_e);
 
-    if (!$result) {
+    if (!$result_e) {
         printf("Error: %s\n", mysqli_error($conn));
         // exit();
     }
 
     // $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    $placeResult = array();
+    $placeResult_e = array();
+  echo "<form action = '#' method = 'post'>";
 
-    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        $placeResult[] = $row;
-    }
-    $x = 0;
-    echo "<form action = '#' method = 'post'>";
+    while ($value = mysqli_fetch_array($result_e, MYSQLI_ASSOC)) {
+ //       $placeResult_e[] = $row_e;
+  //  }
+ //   echo count($placeResult_e);
+ //   $x = 0;
+//    echo "<form action = '#' method = 'post'>";
 
-    foreach ($placeResult as $value) {
-
+ //   foreach ($placeResult_e as $value) {
+//echo 'reach while';
         echo '<a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
             '" value="alter_destination' . $x .
             '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';

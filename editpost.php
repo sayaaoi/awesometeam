@@ -55,11 +55,11 @@ $post_id = $_COOKIE['postID'];
 $user_id = $_SESSION['u_id'];
 
 $sql_post_p = "SELECT * FROM PassengerPosts WHERE postID = '$post_id'";
-// $sql_post_d = "SELECT * FROM DriverPosts WHERE userID = '$user_id'";
+$sql_post_d = "SELECT * FROM DriverPosts WHERE postID = '$post_id'";
 
 $result_p = mysqli_query($conn, $sql_post_p);
-// $result_d = mysqli_query($conn, $sql_post_d);
-if (!$result_p) {
+$result_d = mysqli_query($conn, $sql_post_d);
+if (!$result_p || !$result_d) {
     printf("Error: %s\n", mysqli_error($conn));
     // exit();
 }
@@ -70,17 +70,15 @@ $post_type;
 $passenger_num;
 $luggage_num;
 $car_type; 
-if ($result_p) {
-    $postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC);
+if ( $postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)){
+    
     $post_type = 'PassengerPosts';
     $passenger_num = $postResult['passengerNum'];
     $luggage_num = $postResult['luggageNum'];
-} 
-// else if ($result_d) {
-//     $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC);
-    // $post_type = 'DriverPosts';
-    // $car_type = $postResult['carType'];
-// }
+} else if ( $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)){
+     $post_type = 'DriverPosts';
+     $car_type = $postResult['carType'];
+ }
 else {
     printf("Error: %s\n cannot find data!");
 }
@@ -174,7 +172,7 @@ $sql_update_post = '';
 
         if (isset($_POST['ok_edit_depa'])) {
             $got_place_input = $_POST['edit_depa'];
-            $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
+            $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
             $result = mysqli_query($conn, $sql_place);
             if (!$result) {
                 printf("Error: %s\n", mysqli_error($conn));
@@ -242,7 +240,7 @@ $sql_update_post = '';
 
             $got_place_input = $_POST['edit_dest'];
 
-            $sql_place = "SELECT * FROM places WHERE name LIKE '%$got_place_input%'";
+            $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
             $result = mysqli_query($conn, $sql_place);
 
             if (!$result) {
@@ -324,8 +322,8 @@ $sql_update_post = '';
 
         <div class="row">
             <div class="input-field col s6">
-                <label for="edit__price" class="label">Price: <?php echo $proposed_price;?></label>
-                <input id="edit__price" name="edit__price" type="text" class="input"/>
+                <label for="edit_price" class="label">Price: <?php echo $proposed_price;?></label>
+                <input id="edit_price" name="edit_price" type="text" class="input"/>
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_edit_price">OK</button>
@@ -351,7 +349,7 @@ $sql_update_post = '';
             if (mysqli_query($conn, $sql_update_post)) {
                 echo "Edit post successfully";
             } else {
-                echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+                echo "Error: " . $sql_update_post . "<br>" . $conn->error;
             }
         }
 //TODO: submit successfully reminder appear at wrong time

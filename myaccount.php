@@ -247,7 +247,7 @@ foreach ($postResult_p as $value) {
 
     $depa_id = $value['startPlaceID'];
 
-    $sql_depa_name = "SELECT * FROM places WHERE id = '$depa_id'";
+    $sql_depa_name = "SELECT * FROM Places WHERE id = '$depa_id'";
     $depa_result = mysqli_query($conn, $sql_depa_name);
     if (!$depa_result) {
         printf("Error: %s\n", mysqli_error($conn));
@@ -259,7 +259,7 @@ foreach ($postResult_p as $value) {
 
     $dest_id = $value['endPlaceID'];
 
-    $sql_dest_name = "SELECT * FROM places WHERE id = '$dest_id'";
+    $sql_dest_name = "SELECT * FROM Places WHERE id = '$dest_id'";
     $dest_result = mysqli_query($conn, $sql_dest_name);
     if (!$dest_result) {
         printf("Error: %s\n", mysqli_error($conn));
@@ -296,7 +296,7 @@ foreach ($postResult_d as $value) {
 
     $depa_id = $value['startPlaceID'];
 
-    $sql_depa_name = "SELECT * FROM places WHERE id = '$depa_id'";
+    $sql_depa_name = "SELECT * FROM Places WHERE id = '$depa_id'";
     $depa_result = mysqli_query($conn, $sql_depa_name);
     if (!$depa_result) {
         printf("Error: %s\n", mysqli_error($conn));
@@ -308,7 +308,7 @@ foreach ($postResult_d as $value) {
 
     $dest_id = $value['endPlaceID'];
 
-    $sql_dest_name = "SELECT * FROM places WHERE id = '$dest_id'";
+    $sql_dest_name = "SELECT * FROM Places WHERE id = '$dest_id'";
     $dest_result = mysqli_query($conn, $sql_dest_name);
     if (!$dest_result) {
         printf("Error: %s\n", mysqli_error($conn));
