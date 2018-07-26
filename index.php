@@ -5,6 +5,11 @@ session_start();
 include_once 'conn.php';
 ?>
 
+<?php
+// include kdtree project 
+include 'kdtree_headers.php';
+?>
+
 <!DOCTYPE html>
 <html>
 

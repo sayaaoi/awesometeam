@@ -1,26 +1,26 @@
 <?php
 
 # include Interfaces
-include 'Interfaces/PointInterface.php';
-include 'Interfaces/ItemListInterface.php';
-include 'Interfaces/ItemInterface.php';
-include 'Interfaces/KDTreeInterface.php';
-include 'Interfaces/NodeInterface.php';
-include 'Interfaces/SearchAbstract.php';
-include 'Interfaces/TreePersisterInterface.php';
-include 'Interfaces/ItemFactoryInterface.php';
+include 'kdtree/src/Interfaces/PointInterface.php';
+include 'kdtree/src/Interfaces/ItemListInterface.php';
+include 'kdtree/src/Interfaces/ItemInterface.php';
+include 'kdtree/src/Interfaces/KDTreeInterface.php';
+include 'kdtree/src/Interfaces/NodeInterface.php';
+include 'kdtree/src/Interfaces/SearchAbstract.php';
+include 'kdtree/src/Interfaces/TreePersisterInterface.php';
+include 'kdtree/src/Interfaces/ItemFactoryInterface.php';
 
 # include Classes
-include 'Point.php';
-include 'ItemList.php';
-include 'Item.php';
-include 'KDTree.php';
-include 'Node.php';
-include 'NearestSearch.php';
-include 'FSTreePersister.php';
-include 'FSNode.php';
-include 'FSKDTree.php';
-include 'ItemFactory.php';
+include 'kdtree/src/Point.php';
+include 'kdtree/src/ItemList.php';
+include 'kdtree/src/Item.php';
+include 'kdtree/src/KDTree.php';
+include 'kdtree/src/Node.php';
+include 'kdtree/src/NearestSearch.php';
+include 'kdtree/src/FSTreePersister.php';
+include 'kdtree/src/FSNode.php';
+include 'kdtree/src/FSKDTree.php';
+include 'kdtree/src/ItemFactory.php';
 
 # use Interfaces
 # Note: following NOT needed, since they appear in the below "use Classes" files
@@ -80,5 +80,5 @@ echo "\n";
 echo $result[1]->getNthDimension(2); // 
 echo "\n";
 echo $result[1]->getNthDimension(3); // 
-
+echo "\n";
 ?>
