@@ -183,19 +183,10 @@ if (isset($_POST['ok_destination'])) {
   echo "<form action = '#' method = 'post'>";
 
     while ($value = mysqli_fetch_array($result_e, MYSQLI_ASSOC)) {
- //       $placeResult_e[] = $row_e;
-  //  }
- //   echo count($placeResult_e);
- //   $x = 0;
-//    echo "<form action = '#' method = 'post'>";
 
- //   foreach ($placeResult_e as $value) {
-//echo 'reach while';
         echo '<a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
             '" value="alter_destination' . $x .
             '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
-
-        $x++;
     }
     echo '<button class="btn-flat" type="submit">ok</button></form>';
 }

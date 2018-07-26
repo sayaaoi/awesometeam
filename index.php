@@ -12,6 +12,7 @@ include_once 'conn.php';
     <title>Roadtrip</title>
     <link rel="stylesheet" href="materialize.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 
 <body>
@@ -42,8 +43,9 @@ if (isset($_SESSION['u_id'])) {
     </a>
 </div>
 
+<div class="row">
+<div class="col s9">
 <?php
-
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";
 $sql_post_d = "SELECT * FROM DriverPosts";
@@ -54,16 +56,13 @@ if (!$result_p || !$result_d) {
     // exit();
 }
 
-// $postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
 $postResult_p = array();
 
 while ($row = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
     $postResult_p[] = $row;
 }
-// echo count($placeResult);
 
 $x = 0;
-// while ($arrayResult = mysql_fetch_array($place_result)) {
 foreach ($postResult_p as $value) {
 
     $depa_id = $value['startPlaceID'];
@@ -106,8 +105,6 @@ foreach ($postResult_p as $value) {
 
 }
 
-// $postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
-// echo count($placeResult);
 $postResult_d = array();
 
 while ($row = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
@@ -115,7 +112,6 @@ while ($row = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
 }
 
 $x = 0;
-// while ($arrayResult = mysql_fetch_array($place_result)) {
 foreach ($postResult_d as $value) {
 
     $depa_id = $value['startPlaceID'];
@@ -158,6 +154,31 @@ foreach ($postResult_d as $value) {
 
 }
 ?>
+</div>
+<?php
+
+$sql_user = "SELECT * FROM Users";
+// $result = mysqli_query($conn, $sql_user);
+if ($result = mysqli_query($conn, $sql_user)) {
+    echo '<div class="col s3">';
+
+    while ($value = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        
+        echo '<a href="#" onclick="gotoChat(this.id)" id="' . $value['id'] .
+        '">' . $value['name'] .'   '. $value['email'] . ' </a><br>';
+    }
+    echo "</div>";
+}
+?>
+</div>
+<script>
+    function gotoChat(clicked_id) {
+        
+        localStorage.setItem("userID",clicked_id);
+        window.location.href = "chat.php";
+    }
+
+</script>
 
 
 </body>
