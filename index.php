@@ -1,13 +1,8 @@
 <?php
-// include_once 'navbar.php';
 session_start();
-// echo '<a href = "newpost.php">submit</a>';
 include_once 'conn.php';
-?>
 
-<?php
-// include kdtree project 
-include 'kdtree_headers.php';
+include 'buildkdtree.php';
 ?>
 
 <!DOCTYPE html>

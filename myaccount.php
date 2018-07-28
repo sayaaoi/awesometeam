@@ -268,9 +268,13 @@ foreach ($postResult_p as $value) {
 
     $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
     $dest_name = $destResult['name'];
-
-    echo '  <div class="row">
-                <div class="col s12 m6">
+    ?>
+    <div class="row">
+    <div class="col s6">
+    <?php
+   
+  
+    echo ' 
                     <div class="card">
 
                         <div class="card-content">
@@ -279,16 +283,24 @@ foreach ($postResult_p as $value) {
                             <p>Destination: ' . $dest_name . '</p>
                             <p>Depature Date: ' . $value['date'] . '</p>
                             <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
-                        </div>
-                        <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
-                        <i class="tiny material-icons">edit</i></a>
-                        <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
-                        <i class="tiny material-icons">delete</i></a>
-                    </div>
-                </div>
+                        </div>';
+    if ($value['availability']) {
+        echo '<a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
+                <i class="tiny material-icons">edit</i></a>
+                <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
+                <i class="tiny material-icons">delete</i></a>';
+    }
+        echo ' 
             </div>';
 
 }
+
+?>
+  </div>
+
+                <div class="col s6">
+<?php
+
 
 foreach ($postResult_d as $value) {
 
@@ -318,8 +330,7 @@ foreach ($postResult_d as $value) {
     $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
     $dest_name = $destResult['name'];
 
-    echo '  <div class="row">
-                <div class="col s12 m6">
+    echo ' 
                     <div class="card">
 
                         <div class="card-content">
@@ -328,16 +339,21 @@ foreach ($postResult_d as $value) {
                             <p>Destination: ' . $dest_name . '</p>
                             <p>Depature Date: ' . $value['date'] . '</p>
                             <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
-                        </div>
-                        <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
+                        </div>';
+    if ($value['availability']) {
+        echo '<a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
                         <i class="tiny material-icons">edit</i></a>
                         <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
-                        <i class="tiny material-icons">delete</i></a>
-                    </div>
-                </div>
+                        <i class="tiny material-icons">delete</i></a>';
+    }
+    echo '      
             </div>';
 
 }
+?>
+  </div>
+             
+<?php
 if (isset($_COOKIE['del_post_id'])) {
     // echo "got the cookie";
     $del_post_id = $_COOKIE['del_post_id'];
@@ -378,5 +394,7 @@ if (isset($_COOKIE['del_post_id'])) {
     }
   
 }
+
+//???????????TODO: show chat list
 echo '</body>';
 echo '</html>';

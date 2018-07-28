@@ -180,13 +180,14 @@ if (isset($_POST['ok_destination'])) {
 
     // $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $placeResult_e = array();
-  echo "<form action = '#' method = 'post'>";
-
+    echo "<form action = '#' method = 'post'>";
+    $x=0;
     while ($value = mysqli_fetch_array($result_e, MYSQLI_ASSOC)) {
 
         echo '<a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
             '" value="alter_destination' . $x .
             '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
+        $x++;
     }
     echo '<button class="btn-flat" type="submit">ok</button></form>';
 }
