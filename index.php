@@ -22,6 +22,7 @@ include_once 'conn.php';
         <a href="#" class="brand-logo">Road Trip Together</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="index.php">Home</a></li>
+            <li><a href="matchedRoutes.php">My Trips</a></li>
             <li><a href="myaccount.php">Profile</a></li>
             <li><a href="signup.php">Sign Up</a></li>
 
