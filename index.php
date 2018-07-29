@@ -27,13 +27,13 @@ include_once 'conn.php';
             <li><a href="signup.php">Sign Up</a></li>
 
 
-<?php
-if (isset($_SESSION['u_id'])) {
-    echo '<li><a href="logout.php">log out</a></li>';
-} else {
-    echo '<li><a href="login.php">log in</a></li>';
-}
-?>
+            <?php
+            if (isset($_SESSION['u_id'])) {
+                echo '<li><a href="logout.php">log out</a></li>';
+            } else {
+                echo '<li><a href="login.php">log in</a></li>';
+            }
+            ?>
 
         </ul>
     </div>
@@ -46,6 +46,7 @@ if (isset($_SESSION['u_id'])) {
 
 <div class="row">
 <div class="col s9">
+    
 <?php
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";
