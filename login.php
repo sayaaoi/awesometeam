@@ -22,7 +22,7 @@
 
         <div class="input-field">
             <label for="user_password" class="label">Password</label>
-            <input type="text" name="user_password" id="user_password" class="input-field" required>
+            <input type="password" name="user_password" id="user_password" class="input-field" autocomplete="off" required>
         </div>
 
         <div>

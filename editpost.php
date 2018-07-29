@@ -70,16 +70,15 @@ $post_type;
 $passenger_num;
 $luggage_num;
 $car_type; 
-if ( $postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)){
+if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)){
     
     $post_type = 'PassengerPosts';
     $passenger_num = $postResult['passengerNum'];
     $luggage_num = $postResult['luggageNum'];
-} else if ( $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)){
+} else if ($postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)){
      $post_type = 'DriverPosts';
      $car_type = $postResult['carType'];
- }
-else {
+} else {
     printf("Error: %s\n cannot find data!");
 }
 
@@ -93,11 +92,6 @@ $proposed_price = $postResult['proposedPrice'];
 
 $sql_update_post = '';
 
-// <div class="row">
-//                 <div class="col s12 m6">  </div>
-//                 </div>
-
-//TODO: show places' name
    echo '   <div class="card">
                         <div class="card-content">
                             <p>Post ID: '.$post_id.'</p>
