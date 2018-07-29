@@ -45,6 +45,9 @@ if (isset($_SESSION['u_id'])) {
 
 <div class="row">
 <div class="col s9">
+<div class="row">
+<div class="col s6">
+<h3>Passenger Posts:</h3>
 <?php
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";
@@ -90,20 +93,22 @@ foreach ($postResult_p as $value) {
     $dest_name = $destResult['name'];
 
 
-    echo '  <div class="row">
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-content">
-                            <p>Depature: '.$depa_name.'</p>
-                            <p>Destination: '.$dest_name.'</p>
-                            <p>Depature Date: '.$value['date'].'</p>
-                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+    echo '<div class="card">
+            <div class="card-content">
+                <p>Depature: '.$depa_name.'</p>
+                <p>Destination: '.$dest_name.'</p>
+                <p>Depature Date: '.$value['date'].'</p>
+                <p>Porposed Price: '.$value['proposedPrice'].'</p>
+            </div>
+        </div>';
 
 }
+?>
+</div>
+
+ <div class="col s6">
+    <h3>Driver Posts:</h3>
+<?php
 
 $postResult_d = array();
 
@@ -139,33 +144,33 @@ foreach ($postResult_d as $value) {
     $dest_name = $destResult['name'];
 
 
-    echo '  <div class="row">
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-content">
-                            <p>Depature: '.$depa_name.'</p>
-                            <p>Destination: '.$dest_name.'</p>
-                            <p>Depature Date: '.$value['date'].'</p>
-                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+    echo '<div class="card">
+            <div class="card-content">
+                <p>Depature: '.$depa_name.'</p>
+                <p>Destination: '.$dest_name.'</p>
+                <p>Depature Date: '.$value['date'].'</p>
+                <p>Porposed Price: '.$value['proposedPrice'].'</p>
+            </div>
+        </div>';
 
 }
 ?>
 </div>
+</div>
+</div>
+<div class="col s3">
+    <h3>User list:</h3>
 <?php
 
 $sql_user = "SELECT * FROM Users";
 // $result = mysqli_query($conn, $sql_user);
 if ($result = mysqli_query($conn, $sql_user)) {
-    echo '<div class="col s3">';
+    // echo '<div class="col s3">';
 
     while ($value = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         
-        echo '<a href="#" onclick="gotoChat(this.id)" id="' . $value['id'] .
-        '">' . $value['name'] .'   '. $value['email'] . ' </a><br>';
+        echo '<p><a href="#" onclick="gotoChat(this.id)" id="' . $value['id'] .
+        '">' . $value['name'] .'</a>   '. $value['email'] . ' </p>';
     }
     echo "</div>";
 }
