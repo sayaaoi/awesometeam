@@ -2,7 +2,7 @@
 session_start();
 include_once 'conn.php';
 
-include 'buildkdtree.php';
+// include 'buildkdtree.php';
 ?>
 
 <!DOCTYPE html>

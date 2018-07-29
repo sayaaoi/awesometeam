@@ -134,7 +134,57 @@ if (isset($_SESSION['u_id'])) {
                 document.cookie="del_post_id="+clicked_id;
             } 
         }
+        function showMatch(clicked_id) {
+            // var chatInputString = $chatInput.val();
 
+            // $.get("./buildkdtree.php", {
+            //     post_id: clicked_id,
+            //     // text: chatInputString
+            // });
+            // $.load("./buildkdtree.php", {
+            //     post_id: clicked_id,
+            //     // text: chatInputString
+            // });
+
+            // localStorage.setItem("postID",clicked_id);
+            // window.location.href = "buildkdtree.php";
+            // $userName.val("");
+            // retrieveMessages();
+
+            // $.redirect("buildkdtree.php", {post_id: clicked_id});
+            // url = "buildkdtree.php";
+            // var postFormStr = "<form method='POST' action='" + url + "'>\n";
+
+            // for (var key in postData) {
+            //     if (postData.hasOwnProperty(key)) {
+            //         postFormStr += "<input type='hidden' name='" + key + "' value='" + postData[key] + "'></input>";
+            //     }
+            // }
+
+            // postFormStr += "</form>";
+
+            // var formElement = $(postFormStr);
+
+            // $('body').append(formElement);
+            // $(formElement).submit();
+            // alert ('reach func');
+            // let arg = "post_id";
+            // let value = clicked_id;
+            // let redirectUrl = "buildkdtree.php";
+            // var form = $('<form action="' + redirectUrl + '" method="post">' +
+            //     '<input type="hidden" name="'+ arg +'" value="' + value + '"></input>' + '</form>');
+            // $('body').append(form);
+            // form.submit();
+
+            // var myRedirect = function(redirectUrl) {
+            var form = $('<form action="buildkdtree.php" method="post">' +
+            '<input type="hidden" name="parameter1" value="sample" />' +
+            '<input type="hidden" name="parameter2" value="Sample data 2" />' +
+            '</form>');
+            $('body').append(form);
+            $(form).submit();
+            // };
+        }
     </script>
 
 <?php
@@ -288,7 +338,18 @@ foreach ($postResult_p as $value) {
         echo '<a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
                 <i class="tiny material-icons">edit</i></a>
                 <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
-                <i class="tiny material-icons">delete</i></a>';
+                <i class="tiny material-icons">delete</i></a>
+                <form action="buildkdtree.php" method="post">
+                <input type="hidden" name="post_id" value="' . $value['postID'] . '" />
+                <button class="btn waves-effect waves-light red" type="submit" name="oooooooooook"> <i class="tiny material-icons">chevron_right</i></button>
+         
+            </form>';
+            // <a class="btn halfway-fab waves-effect waves-light red" type="submit">
+            // <i class="tiny material-icons">chevron_right</i></a>
+            // <input type="hidden" name="parameter1" value="sample" />
+            // <input type="hidden" name="parameter2" value="Sample data 2" />
+                // <a class="btn halfway-fab waves-effect waves-light red" onclick="showMatch(this.id)" id="' . $value['postID'] . '">
+                // <i class="tiny material-icons">chevron_right</i></a>';
     }
         echo ' 
             </div>';
@@ -342,9 +403,15 @@ foreach ($postResult_d as $value) {
                         </div>';
     if ($value['availability']) {
         echo '<a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
-                        <i class="tiny material-icons">edit</i></a>
-                        <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
-                        <i class="tiny material-icons">delete</i></a>';
+            <i class="tiny material-icons">edit</i></a>
+            <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
+            <i class="tiny material-icons">delete</i></a>
+            <form action="buildkdtree.php" method="post">
+            <input type="hidden" name="post_id" value="' . $value['postID'] . '" />
+            <button class="btn waves-effect waves-light red" type="submit" name="oooooooooook"> <i class="tiny material-icons">chevron_right</i></button>
+            </form>';
+            // <a class="btn halfway-fab waves-effect waves-light red" onclick="showMatch(this.id)" id="' . $value['postID'] . '">
+            // <i class="tiny material-icons">chevron_right</i></a>';
     }
     echo '      
             </div>';
@@ -396,5 +463,8 @@ if (isset($_COOKIE['del_post_id'])) {
 }
 
 //???????????TODO: show chat list
-echo '</body>';
-echo '</html>';
+// echo '</body>';
+// echo '</html>';
+?>
+</body>
+</html>
