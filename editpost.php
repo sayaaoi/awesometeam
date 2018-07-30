@@ -87,7 +87,16 @@ $destination_id = $postResult['endPlaceID'];
 $depature_date = $postResult['date'];
 $proposed_price = $postResult['proposedPrice'];
 
-
+if ($depa_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$depature_id'")) {
+    $depa = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+    $depa_name = $depa['name'];
+    $depa_addr = $depa['address'];
+}
+if ($dest_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$destination_id'")) {
+    $dest = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+    $dest_name = $dest['name'];
+    $dest_addr = $dest['address'];
+}
 
 
 $sql_update_post = '';
@@ -95,8 +104,8 @@ $sql_update_post = '';
    echo '   <div class="card">
                         <div class="card-content">
                             <p>Post ID: '.$post_id.'</p>
-                            <p>Depature: '.$depature_id.'</p>
-                            <p>Destination: '.$destination_id.'</p>
+                            <p>Depature: ' . $depa_name . '     Address: ' . $depa_addr . '</p>
+                            <p>Destination: ' . $dest_name . '     Address: ' . $dest_addr . '</p>
                             <p>Depature Date: '.$depature_date.'</p>
                             <p>Porposed Price: '.$proposed_price.'</p>
                         </div> 

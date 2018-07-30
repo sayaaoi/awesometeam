@@ -135,14 +135,26 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
 
     $passenger_num = $postResult['passengerNum'];
     $luggage_num = $postResult['luggageNum'];
- 
+   
+    if ($depa_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$depature_id'")) {
+        $depa = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+        $depa_name = $depa['name'];
+        $depa_addr = $depa['address'];
+    }
+    if ($dest_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$destination_id'")) {
+        $dest = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+        $dest_name = $dest['name'];
+        $dest_addr = $dest['address'];
+    }
     echo '   <div class="card">
                             <div class="card-content">
                                 <p>Post ID: ' . $post_id . '</p>
-                                <p>Depature: ' . $depature_id . '</p>
-                                <p>Destination: ' . $destination_id . '</p>
+                                <p>Depature: ' . $depa_name . '     Address: ' . $depa_addr . '</p>
+                                <p>Destination: ' . $dest_name . '     Address: ' . $dest_addr . '</p>
                                 <p>Depature Date: ' . $depature_date . '</p>
-                                <p>Porposed Price: ' . $proposed_price . '</p>
+                                <p>Number of passenger: ' . $depature_date . '</p>
+                                <p>Number of luggage: ' . $passenger_num . '</p>
+                                <p>Porposed Price: ' . $luggage_num . '</p>
                             </div>
                 </div>';
     echo "<h5>Matching posts ordered by distance:</h5>";
@@ -228,12 +240,23 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
     $depature_id = $postResult['startPlaceID'];
     $destination_id = $postResult['endPlaceID'];
     $proposed_price = $postResult['proposedPrice'];
+
+    if ($depa_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$depature_id'")) {
+        $depa = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+        $depa_name = $depa['name'];
+        $depa_addr = $depa['address'];
+    }
+    if ($dest_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$destination_id'")) {
+        $dest = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+        $dest_name = $dest['name'];
+        $dest_addr = $dest['address'];
+    }
  
     echo '   <div class="card">
                             <div class="card-content">
                                 <p>Post ID: ' . $post_id . '</p>
-                                <p>Depature: ' . $depature_id . '</p>
-                                <p>Destination: ' . $destination_id . '</p>
+                                <p>Depature: ' . $depa_name . '     Address: ' . $depa_addr . '</p>
+                                <p>Destination: ' . $dest_name . '     Address: ' . $dest_addr . '</p>
                                 <p>Depature Date: ' . $depature_date . '</p>
                                 <p>Porposed Price: ' . $proposed_price . '</p>
                             </div>
