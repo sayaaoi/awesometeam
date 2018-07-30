@@ -134,57 +134,7 @@ if (isset($_SESSION['u_id'])) {
                 document.cookie="del_post_id="+clicked_id;
             } 
         }
-        function showMatch(clicked_id) {
-            // var chatInputString = $chatInput.val();
-
-            // $.get("./buildkdtree.php", {
-            //     post_id: clicked_id,
-            //     // text: chatInputString
-            // });
-            // $.load("./buildkdtree.php", {
-            //     post_id: clicked_id,
-            //     // text: chatInputString
-            // });
-
-            // localStorage.setItem("postID",clicked_id);
-            // window.location.href = "buildkdtree.php";
-            // $userName.val("");
-            // retrieveMessages();
-
-            // $.redirect("buildkdtree.php", {post_id: clicked_id});
-            // url = "buildkdtree.php";
-            // var postFormStr = "<form method='POST' action='" + url + "'>\n";
-
-            // for (var key in postData) {
-            //     if (postData.hasOwnProperty(key)) {
-            //         postFormStr += "<input type='hidden' name='" + key + "' value='" + postData[key] + "'></input>";
-            //     }
-            // }
-
-            // postFormStr += "</form>";
-
-            // var formElement = $(postFormStr);
-
-            // $('body').append(formElement);
-            // $(formElement).submit();
-            // alert ('reach func');
-            // let arg = "post_id";
-            // let value = clicked_id;
-            // let redirectUrl = "buildkdtree.php";
-            // var form = $('<form action="' + redirectUrl + '" method="post">' +
-            //     '<input type="hidden" name="'+ arg +'" value="' + value + '"></input>' + '</form>');
-            // $('body').append(form);
-            // form.submit();
-
-            // var myRedirect = function(redirectUrl) {
-            var form = $('<form action="buildkdtree.php" method="post">' +
-            '<input type="hidden" name="parameter1" value="sample" />' +
-            '<input type="hidden" name="parameter2" value="Sample data 2" />' +
-            '</form>');
-            $('body').append(form);
-            $(form).submit();
-            // };
-        }
+    
     </script>
 
 <?php
@@ -208,11 +158,6 @@ if (!$user_query) {
 }
 // echo 'Profile：<br />';
 echo 'User ID：', $user_id, '<br />';
-// <label for="destination" class="label">Your :</label>
-// <input id="destination" name="destination" type="text" class="input" method="get"/>
-
-// <div class="row">
-// </div>
 
 echo '<p>User Name：', $user_name, '<a class="btn-flat" onclick="editUserName()">
 <i class="tiny material-icons"  name="edit_name">edit</i></a></p><form action="#" method="post">
@@ -264,7 +209,13 @@ if (isset($_POST['ok_new_email_button'])) {
 
 <?php
 }
-}
+}?>
+  <div class="row">
+    <div class="col s9">
+        <div class="row">
+            <div class="col s6">
+            <h3>Your Passenger Posts:</h3>
+<?php
 //TODO: deal with two kinds of posts
 $sql_post_p = "SELECT * FROM PassengerPosts WHERE userID = '$user_id'";
 $sql_post_d = "SELECT * FROM DriverPosts WHERE userID = '$user_id'";
@@ -318,48 +269,34 @@ foreach ($postResult_p as $value) {
 
     $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
     $dest_name = $destResult['name'];
-    ?>
-    <div class="row">
-    <div class="col s6">
-    <?php
-   
-  
-    echo ' 
-                    <div class="card">
 
-                        <div class="card-content">
-                            <p>Post ID: ' . $value['postID'] . '</p>
-                            <p>Depature: ' . $depa_name . '</p>
-                            <p>Destination: ' . $dest_name . '</p>
-                            <p>Depature Date: ' . $value['date'] . '</p>
-                            <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
-                        </div>';
+    echo '<div class="card">
+            <div class="card-content">
+                <p>Post ID: ' . $value['postID'] . '</p>
+                <p>Depature: ' . $depa_name . '</p>
+                <p>Destination: ' . $dest_name . '</p>
+                <p>Depature Date: ' . $value['date'] . '</p>
+                <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
+            </div>';
     if ($value['availability']) {
-        echo '<a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
+        echo ' <form action="buildkdtree.php" method="post">
+                <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
                 <i class="tiny material-icons">edit</i></a>
                 <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
                 <i class="tiny material-icons">delete</i></a>
-                <form action="buildkdtree.php" method="post">
                 <input type="hidden" name="post_id" value="' . $value['postID'] . '" />
-                <button class="btn waves-effect waves-light red" type="submit" name="oooooooooook"> <i class="tiny material-icons">chevron_right</i></button>
-         
+                <button class="btn waves-effect waves-light red" type="submit" name="oooooooooook"> 
+                <i class="tiny material-icons">chevron_right</i></button>
             </form>';
-            // <a class="btn halfway-fab waves-effect waves-light red" type="submit">
-            // <i class="tiny material-icons">chevron_right</i></a>
-            // <input type="hidden" name="parameter1" value="sample" />
-            // <input type="hidden" name="parameter2" value="Sample data 2" />
-                // <a class="btn halfway-fab waves-effect waves-light red" onclick="showMatch(this.id)" id="' . $value['postID'] . '">
-                // <i class="tiny material-icons">chevron_right</i></a>';
     }
-        echo ' 
-            </div>';
-
+    echo '</div>';
 }
 
 ?>
-  </div>
+            </div>
 
-                <div class="col s6">
+            <div class="col s6">
+            <h3>Your Driver Posts:</h3>
 <?php
 
 
@@ -391,35 +328,32 @@ foreach ($postResult_d as $value) {
     $destResult = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
     $dest_name = $destResult['name'];
 
-    echo ' 
-                    <div class="card">
-
-                        <div class="card-content">
-                            <p>Post ID: ' . $value['postID'] . '</p>
-                            <p>Depature: ' . $depa_name . '</p>
-                            <p>Destination: ' . $dest_name . '</p>
-                            <p>Depature Date: ' . $value['date'] . '</p>
-                            <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
-                        </div>';
+    echo '<div class="card">
+            <div class="card-content">
+                <p>Post ID: ' . $value['postID'] . '</p>
+                <p>Depature: ' . $depa_name . '</p>
+                <p>Destination: ' . $dest_name . '</p>
+                <p>Depature Date: ' . $value['date'] . '</p>
+                <p>Porposed Price: ' . $value['proposedPrice'] . '</p>
+            </div>';
     if ($value['availability']) {
-        echo '<a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
+        echo '<form action="buildkdtree.php" method="post">
+            <a class="btn halfway-fab waves-effect waves-light red" onclick="editPost(this.id)" id="' . $value['postID'] . '">
             <i class="tiny material-icons">edit</i></a>
             <a class="btn halfway-fab waves-effect waves-light red" onclick="deletePost(this.id)" id="' . $value['postID'] . '">
             <i class="tiny material-icons">delete</i></a>
-            <form action="buildkdtree.php" method="post">
             <input type="hidden" name="post_id" value="' . $value['postID'] . '" />
             <button class="btn waves-effect waves-light red" type="submit" name="oooooooooook"> <i class="tiny material-icons">chevron_right</i></button>
             </form>';
-            // <a class="btn halfway-fab waves-effect waves-light red" onclick="showMatch(this.id)" id="' . $value['postID'] . '">
-            // <i class="tiny material-icons">chevron_right</i></a>';
     }
-    echo '      
-            </div>';
+    echo '</div>';
 
 }
 ?>
   </div>
-             
+  </div>
+  </div>
+         
 <?php
 if (isset($_COOKIE['del_post_id'])) {
     // echo "got the cookie";
@@ -443,28 +377,62 @@ if (isset($_COOKIE['del_post_id'])) {
         $post_type = 'PassengerPosts';
         $passenger_num = $postResult['passengerNum'];
         $luggage_num = $postResult['luggageNum'];
-    }
-    else if ($result_d) {
+    } else if ($result_d) {
         $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC);
     $post_type = 'DriverPosts';
     $car_type = $postResult['carType'];
-    }
-    else {
+    } else {
         printf("Error: %s\n cannot find data!");
     }
     $sql_delete = "DELETE FROM $post_type
     WHERE postID = '$del_post_id'";
 
     if (!mysqli_query($conn, $sql_delete)) {
-    
-        echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+        echo "Error: " . $sql_delete . "<br>" . $conn->error;
     }
-  
 }
-
-//???????????TODO: show chat list
-// echo '</body>';
-// echo '</html>';
 ?>
+<div class="col s3">
+    <h3>Chat list:</h3>
+
+<?php
+
+$sql_user = "SELECT *
+FROM Users
+WHERE Users.id <> '$user_id' 
+AND (
+    Users.id = ANY (
+    SELECT senderID
+    FROM Chat
+    WHERE Chat.receiverID = '$user_id')
+    OR 
+    Users.id = ANY (
+    SELECT receiverID
+    FROM Chat
+    WHERE Chat.senderID = '$user_id')
+)";
+if ($result = mysqli_query($conn, $sql_user)) {
+
+    while ($value = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        
+        echo '<p><a href="#" onclick="gotoChat(this.id)" id="' . $value['id'] .
+        '">' . $value['name'] .' </a></p>';
+    }
+    echo "</div>";
+} else {
+    echo "Error: " . $sql_user . "<br>" . $conn->error;
+}
+?>
+</div>
+<script>
+    function gotoChat(clicked_id) {
+        
+        localStorage.setItem("userID",clicked_id);
+        window.location.href = "chat.php";
+    }
+
+</script>
+</div>
+
 </body>
 </html>
