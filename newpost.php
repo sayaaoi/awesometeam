@@ -26,7 +26,10 @@
             <div class="input-field col s6">
                     <label for="depature" class="label">Depature:</label>
                     <input id="depature" name="depature" type="text" class="input-field" />
-                    <!-- <input type="text" name="user_name" id="user_name" class="input-field"> -->
+            </div>
+            <div class="input-field col s6">
+                    <label for="depa_region" class="label">Region:</label>
+                    <input id="depa_region" name="depa_region" type="text" class="input-field" />
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_depature">OK</button>
@@ -91,10 +94,11 @@ while (!$get_valid_id) {
 // echo $post_id;
 
 if (isset($_POST['ok_depature'])) {
-    echo "got input";
+    // echo "got input";
     $got_place_input = $_POST['depature'];
-    echo $got_place_input;
-    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
+    $got_place_region = $_POST['depa_region'];
+    // echo $got_place_input;
+    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%' AND address LIKE '%$got_place_region%'";
     $result = mysqli_query($conn, $sql_place);
     if (!$result) {
         printf("Error: %s\n", mysqli_error($conn));
@@ -106,14 +110,12 @@ if (isset($_POST['ok_depature'])) {
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $placeResult[] = $row;
     }
-    echo count($placeResult);
-    echo "reach this line";
+    // echo count($placeResult);
+    // echo "reach this line";
     $x = 0;
     echo "<form method = 'post'>";
     foreach ($placeResult as $value) {
 
-        // echo "alter_depature" . $x;
-        //TODO: not transfer text to uppercase
         echo '<a href="#"  onclick="getDepature(this.id)" id="' . $value['id'] .
             '" value="alter_depature' . $x .
             '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
@@ -146,6 +148,10 @@ if (isset($_COOKIE['depa'])) {
             <div class="input-field col s6">
                 <label for="destination" class="label">Destination:</label>
                 <input id="destination" name="destination" type="text" class="input"/>
+            </div> 
+            <div class="input-field col s6">
+                <label for="dest_region" class="label">Region:</label>
+                <input id="dest_region" name="dest_region" type="text" class="input"/>
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_destination">OK</button>
@@ -167,10 +173,11 @@ if (isset($_COOKIE['depa'])) {
 if (isset($_POST['ok_destination'])) {
     include 'conn.php';  
   echo "got input";
+    $got_place_region_e = $_POST['dest_region'];
     $got_place_input_e = $_POST['destination'];
     echo $got_place_input_e;
     // echo $_POST['destination'];
-    $sql_place_e = "SELECT * FROM Places WHERE name LIKE '%$got_place_input_e%'";
+    $sql_place_e = "SELECT * FROM Places WHERE name LIKE '%$got_place_input_e%' AND address LIKE '%$got_place_region_e%'";
     $result_e = mysqli_query($conn, $sql_place_e);
 
     if (!$result_e) {
@@ -316,7 +323,7 @@ if ($post_type == 'passenger') {
    
     
     if (isset($_POST['ok_car_type'])) {
-        $car_type = $_POST['car_type'];
+        $car_type = htmlentities(mysqli_real_escape_string($conn, $_POST['car_type']));
         $depature_date = $_POST['depature_date'];
         $proposed_price = $_POST['proposed_price'];
         //TODO

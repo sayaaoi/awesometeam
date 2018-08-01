@@ -33,6 +33,12 @@ use Hexogen\KDTree\ItemList;
 use Hexogen\KDTree\KDTree;
 use Hexogen\KDTree\Point;
 use Hexogen\KDTree\NearestSearch;
+
+  
+if (isset($_POST['post_id'])) {
+    $post_id = $_POST['post_id'];
+    // echo $post_id;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,10 +50,27 @@ use Hexogen\KDTree\NearestSearch;
     <script src="js/libs/jquery.min.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>
+   
+ 
     function gotoChat(clicked_id) {
-        
         localStorage.setItem("userID",clicked_id);
         window.location.href = "chat.php";
+    }
+
+    
+    function makeDeal(clicked_id, post_id) {
+        
+        // var chatInputString = $chatInput.val();
+        alert(post_id);
+        alert(clicked_id);
+        $.get("./makedeal.php", {
+            postID: post_id,
+            matchPostID: clicked_id
+            // thisPostType: this_post_type
+        }, function(data) {
+            $output.html(data); //Paste content into chat output
+        });
+        alert('what');
     }
 
     </script>
@@ -65,10 +88,7 @@ use Hexogen\KDTree\NearestSearch;
 </head>
 
 <body>
-    <script>
-        let post_id = localStorage.getItem("postID");
-        document.cookie="postID="+post_id;
-    </script>
+  
 
   <div class="container">
 <?php
@@ -211,8 +231,11 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
                     <p>Porposed Price: ' . $match_post['proposedPrice'] . '</p>
                     <p>Car type: ' . $match_post['carType'] . '</p>
                     <p>Posted by: <a href="#" onclick="gotoChat(this.id)" id="' . $poster_id .'">  '. $poster_name.' </a></p>
+                   
                 </div>
             </div>';
+            // <button onclick="makeDeal('.$post_id.', this.id)" id="' . $match_post['postID'] .
+            // '"><i class="material-icons">check</i></button>
         }
     }
 } else if ($postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
@@ -315,10 +338,11 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
                     <p>Porposed Price: ' . $match_post['proposedPrice'] . '</p>
                     <p>Number of passengers: ' . $match_post['passengerNum'] . '</p>
                     <p>Number of luggages: ' . $match_post['luggageNum'] . '</p>
-                  
                     <p>Posted by: <a href="#" onclick="gotoChat(this.id)" id="' . $poster_id .'">  '. $poster_name.' </a></p>
                 </div>
             </div>';
+            // <button class="btn-floating btn-large waves-effect waves-light red" onclick="makeDeal(this.id, ' .$post_id .')" id="' . $match_post['postID'] .
+            // '"><i class="material-icons">check</i></button>
         }
     }
 } else {
@@ -333,6 +357,8 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
         <i class="material-icons">chevron_left</i>
     </a>
 </div>
+
+ <div id="output"></div>
 
        
 </body>

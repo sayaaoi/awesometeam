@@ -8,11 +8,10 @@ include_once 'conn.php';
 $sender_id =  $_SESSION['u_id'];
 $username=$_GET["receiver_id"];
 $text=$_GET["text"];
-//escaping is extremely important to avoid injections!
-// $nameEscaped = htmlentities(mysqli_real_escape_string($db,$username)); //escape username and limit it to 32 chars
+
 $textEscaped = htmlentities(mysqli_real_escape_string($conn, $text)); //escape text and limit it to 128 chars
 
-//create query
+
 //write into db
 //create query
 $query="INSERT INTO Chat (senderID, receiverID, message, time) VALUES ('$sender_id', '$username', '$textEscaped', NOW())";
