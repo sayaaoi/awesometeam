@@ -294,42 +294,39 @@ if ($post_type == 'passenger') {
 
     </form>
 
+<?php
+}
 
-<?php # prepared statements
 // prepare and bind
 $stmt_p = $conn->prepare("INSERT INTO PassengerPosts
         (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt_p->bind_param("ssiisssii", $post_id);
+        $x=1;
+$stmt_p->bind_param("ssdisssii", $post_id, $depature_date, $proposed_price, $x, $depature_id,$destination_id, $user_id,
+$passenger_num, $luggage_num);
 
 #$stmt_d = $conn->prepare("SELECT * FROM DriverPosts WHERE postID = ?");
 #$stmt_d->bind_param("s", $post_id);
-?>
-
-<?php
-}
-
-
     if (isset($_POST['ok_passenger_info'])) {
         $passenger_num = $_POST['passenger_num'];
         $luggage_num = $_POST['luggage_num'];
         $depature_date = $_POST['depature_date'];
         $proposed_price = $_POST['proposed_price'];
 
-        $stmt->execute();
+        $stmt_p->execute();
 
         #$sql_insert_post = "INSERT INTO PassengerPosts
         #(postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
         #VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
         #$passenger_num, $luggage_num)";
 
-        echo $depature_date;
-        echo $sql_insert_post;
-        if (mysqli_query($conn, $sql_insert_post)) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
-        }
+        // echo $depature_date;
+        // echo $sql_insert_post;
+        // if (mysqli_query($conn, $sql_insert_post)) {
+        //     echo "New record created successfully";
+        // } else {
+        //     echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+        // }
         
     }
    
