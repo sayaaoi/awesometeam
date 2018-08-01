@@ -295,6 +295,16 @@ if ($post_type == 'passenger') {
     </form>
 
 
+<?php # prepared statements
+// prepare and bind
+$stmt_p = $conn->prepare("INSERT INTO PassengerPosts
+        (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt_p->bind_param("ssiisssii", $post_id);
+
+#$stmt_d = $conn->prepare("SELECT * FROM DriverPosts WHERE postID = ?");
+#$stmt_d->bind_param("s", $post_id);
+?>
 
 <?php
 }
@@ -306,10 +316,12 @@ if ($post_type == 'passenger') {
         $depature_date = $_POST['depature_date'];
         $proposed_price = $_POST['proposed_price'];
 
-        $sql_insert_post = "INSERT INTO PassengerPosts
-        (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
-        VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
-        $passenger_num, $luggage_num)";
+        $stmt->execute();
+
+        #$sql_insert_post = "INSERT INTO PassengerPosts
+        #(postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
+        #VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
+        #$passenger_num, $luggage_num)";
 
         echo $depature_date;
         echo $sql_insert_post;

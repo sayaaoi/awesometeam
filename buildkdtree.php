@@ -102,20 +102,6 @@ if (!isset($_SESSION['u_id'])) {
  
 
 
-<?php # prepared statements
-// prepare and bind
-$stmt_p = $conn->prepare("SELECT * FROM PassengerPosts WHERE postID = ?");
-$stmt_p->bind_param("s", $post_id);
-
-$stmt_d = $conn->prepare("SELECT * FROM DriverPosts WHERE postID = ?");
-$stmt_d->bind_param("s", $post_id);
-
-
-
-
-
-?>
-
 <?php
 }
 
@@ -130,10 +116,9 @@ $user_id = $_SESSION['u_id'];
 $sql_post_p = "SELECT * FROM PassengerPosts WHERE postID = '$post_id'";
 $sql_post_d = "SELECT * FROM DriverPosts WHERE postID = '$post_id'";
 
-#$result_p = mysqli_query($conn, $sql_post_p);
-#$result_d = mysqli_query($conn, $sql_post_d);
-$result_p = $stmt_p->execute();
-$result_d = $stmt_d->execute();
+$result_p = mysqli_query($conn, $sql_post_p);
+$result_d = mysqli_query($conn, $sql_post_d);
+
 
 if (!$result_p || !$result_d) {
     printf("Error: %s\n", mysqli_error($conn));
