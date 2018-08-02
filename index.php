@@ -10,7 +10,11 @@ include_once 'conn.php';
     <title>Roadtrip</title>
     <link rel="stylesheet" href="materialize.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <style>
+        .slogan {
+            padding: 70px;
+        }
+    </style>
 
 </head>
 
