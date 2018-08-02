@@ -10,13 +10,7 @@
     document.cookie="chatUserID="+chat_user_id;
     // jQuery Document
     $(document).ready(function(){
-        //If user wants to end session
-        // $("#exit").click(function(){
-        //     var exit = confirm("Are you sure you want to end the session?");
-        //     if(exit==true){
-        //         window.location = 'index.php';
-        //     }
-        // });
+
 
         var chatInterval = 250; //refresh interval in ms
     

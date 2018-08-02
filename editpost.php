@@ -174,7 +174,7 @@ $sql_update_post = '';
 
 
         if (isset($_POST['ok_edit_depa'])) {
-            $got_place_input = $_POST['edit_depa'];
+            $got_place_input = htmlentities(mysqli_real_escape_string($_POST['edit_depa']));
             $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
             $result = mysqli_query($conn, $sql_place);
             if (!$result) {
@@ -241,7 +241,7 @@ $sql_update_post = '';
 
         if (isset($_POST['ok_edit_dest'])) {
 
-            $got_place_input = $_POST['edit_dest'];
+            $got_place_input =  htmlentities(mysqli_real_escape_string($_POST['edit_dest']));
 
             $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
             $result = mysqli_query($conn, $sql_place);
@@ -379,12 +379,7 @@ if (isset($_POST['ok_post'])) {
     header("Location: myaccount.php");
 }
 ?>
-  <!-- <script>
-        var retVal = confirm("Are you sure to discard this edition?");
-        if( retVal == true ){
-            window.location.href = "myaccount.php";
-        }
-    </script> -->
+
     </div>
 </body>
 
