@@ -17,7 +17,7 @@ include_once 'conn.php';
 <body>
 
 <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper black">
         <a href="#" class="brand-logo">Road Trip Together</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="index.php">Home</a></li>
