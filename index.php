@@ -24,10 +24,6 @@ include_once 'conn.php';
         <a href="#" class="brand-logo">Road Trip Together</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="index.php">Home</a></li>
-<<<<<<< HEAD
-            <!-- <li><a href="matchedRoutes.php">My Trips</a></li> -->
-=======
->>>>>>> 7c0526cfb0a1d75ee8c84d4b4a1e41a0f87270cd
             <li><a href="myaccount.php">Profile</a></li>
             <li><a href="signup.php">Sign Up</a></li>
 
@@ -51,20 +47,12 @@ include_once 'conn.php';
 
 <div class="row">
 <div class="col s9">
-<<<<<<< HEAD
-=======
-
->>>>>>> 7c0526cfb0a1d75ee8c84d4b4a1e41a0f87270cd
 <div class="row">
 <div class="col s6">
 
 
 
 <h3>Passenger Posts:</h3>
-<<<<<<< HEAD
-=======
-
->>>>>>> 7c0526cfb0a1d75ee8c84d4b4a1e41a0f87270cd
 <?php
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";
