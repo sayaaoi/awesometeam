@@ -13,9 +13,10 @@ include_once 'conn.php';
     <link rel="stylesheet" href="materialize.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+
 </head>
 
-<body style="background-image:url('figs/young-couple-driving-convertible-at-sunset.jpg')">
+<body background="figs/young-couple-driving-convertible-at-sunset.jpg">
 
 <nav>
     <div class="nav-wrapper">
