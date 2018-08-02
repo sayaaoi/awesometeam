@@ -15,7 +15,7 @@ include_once 'conn.php';
 
 </head>
 
-<body>
+<body style="background-image:url('fig/young-couple-driving-convertible-at-sunset.jpg')">
 
 <nav>
     <div class="nav-wrapper">
@@ -48,6 +48,9 @@ include_once 'conn.php';
 
 <div class="row">
 <div class="col s6">
+
+
+
 <h3>Passenger Posts:</h3>
 
 <?php
