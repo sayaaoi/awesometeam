@@ -18,6 +18,9 @@ include_once 'conn.php';
 
 <body background="figure1.jpg">
 
+<h1>Hello world!</h1>
+<p><a href="https://www.w3schools.com">Visit W3Schools.com!</a></p>
+
 <nav>
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Road Trip Together</a>
