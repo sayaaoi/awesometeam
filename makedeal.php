@@ -61,6 +61,7 @@ WHERE postID = '$pass_post_id'";
 if (mysqli_query($conn, $update_p)) {
     // echo "Send message successfully";
 } else {
+    echo '"Error: " . $update_p . "<br>" . $conn->error';
     alert("Error: " . $update_p . "<br>" . $conn->error);
 }
 
@@ -68,15 +69,16 @@ $update_d = "UPDATE DriverPosts
 SET availability = 0
 WHERE postID = '$driv_post_id'";
 if (mysqli_query($conn, $update_d)) {
-    // echo "Send message successfully";
+    echo "Congradulations! You made a deal!";
     alert("Congradulations! You made a deal!");
-?>
-<script type="text/javascript">
-        window.location.href = "index.php";
-        </script>
-<?php
+// ?>
+// <script type="text/javascript">
+//         window.location.href = "index.php";
+//         </script>
+// <?php
 } else {
     alert("Error: " . $update_d . "<br>" . $conn->error);
+    echo '"Error: " . $update_d . "<br>" . $conn->error';
 }
 
 ?>
