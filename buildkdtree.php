@@ -232,7 +232,7 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
                     <p>Porposed Price: ' . $match_post['proposedPrice'] . '</p>
                     <p>Car type: ' . $match_post['carType'] . '</p>
                     <p>Posted by: <a href="#" onclick="gotoChat(this.id)" id="' . $poster_id .'">  '. $poster_name.' </a></p>
-                    <button  class="btn-floating btn-large waves-effect waves-light red" onclick="makeDeal(this.id)" id="' . $match_post['postID'] .
+                    <button class="btn-floating btn-large waves-effect waves-light red" onclick="makeDeal(this.id)" id="' . $match_post['postID'] .
                     '"><i class="material-icons">check</i></button>
                 </div>
             </div>';
