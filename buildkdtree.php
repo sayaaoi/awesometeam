@@ -65,6 +65,8 @@ if (isset($_POST['post_id'])) {
             $.get("./makedeal.php", {
                 postID: post_id,
                 matchPostID: clicked_id
+            }, function(data) {
+              alert(data);
             });
         }
 
