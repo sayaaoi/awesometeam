@@ -36,6 +36,8 @@ include_once 'conn.php';
         </ul>
     </div>
 </nav>
+<h3 class="slogan">Hello world!<br />Life is like a voyage.</h3>
+
 <img src="figs/fiture1.jpg" width=100% alt=""/>
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large red" href = "newpost.php">
