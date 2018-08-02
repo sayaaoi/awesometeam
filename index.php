@@ -1,8 +1,6 @@
 <?php
 session_start();
 include_once 'conn.php';
-
-// include 'buildkdtree.php';
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +20,7 @@ include_once 'conn.php';
         <a href="#" class="brand-logo">Road Trip Together</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="index.php">Home</a></li>
-            <li><a href="matchedRoutes.php">My Trips</a></li>
+            <!-- <li><a href="matchedRoutes.php">My Trips</a></li> -->
             <li><a href="myaccount.php">Profile</a></li>
             <li><a href="signup.php">Sign Up</a></li>
 
@@ -46,13 +44,9 @@ include_once 'conn.php';
 
 <div class="row">
 <div class="col s9">
-<<<<<<< HEAD
-    
-=======
 <div class="row">
 <div class="col s6">
 <h3>Passenger Posts:</h3>
->>>>>>> 2ffe4b087a6122d34e48a96f606dfd93fad83cff
 <?php
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";

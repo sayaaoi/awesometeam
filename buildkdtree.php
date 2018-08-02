@@ -47,31 +47,26 @@ if (isset($_POST['post_id'])) {
     <title>Roadtrip</title>
     <link rel="stylesheet" href="materialize.css" />
 
-    <script src="js/libs/jquery.min.js" type="text/javascript"></script>
+    <!-- <script src="js/libs/jquery.min.js" type="text/javascript"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
+    <script type="text/javascript">
    
- 
-    function gotoChat(clicked_id) {
-        localStorage.setItem("userID",clicked_id);
-        window.location.href = "chat.php";
-    }
 
-    
-    function makeDeal(clicked_id, post_id) {
+        function gotoChat(clicked_id) {
+            localStorage.setItem("userID",clicked_id);
+            window.location.href = "chat.php";
+        }
+
         
-        // var chatInputString = $chatInput.val();
-        alert(post_id);
-        alert(clicked_id);
-        $.get("./makedeal.php", {
-            postID: post_id,
-            matchPostID: clicked_id
-            // thisPostType: this_post_type
-        }, function(data) {
-            $output.html(data); //Paste content into chat output
-        });
-        alert('what');
-    }
+        function makeDeal(clicked_id) {
+
+            var post_id = '<?php echo $post_id ?>';
+            $.get("./makedeal.php", {
+                postID: post_id,
+                matchPostID: clicked_id
+            });
+        }
 
     </script>
     <style>
@@ -141,7 +136,8 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
     $sql_driver_place = "SELECT * FROM DriverPlaces, DriverPosts 
     WHERE DriverPosts.userID <> '$user_id' 
     AND DriverPosts.date = '$depature_date'
-    AND DriverPosts.id = DriverPlaces.id";
+    AND DriverPosts.id = DriverPlaces.id
+    AND DriverPosts.availability = 1";
     $x=0;
     if ($resultD = mysqli_query($conn, $sql_driver_place)) {
         while ($row = mysqli_fetch_array($resultD, MYSQLI_ASSOC)) {
@@ -234,11 +230,11 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
                     <p>Porposed Price: ' . $match_post['proposedPrice'] . '</p>
                     <p>Car type: ' . $match_post['carType'] . '</p>
                     <p>Posted by: <a href="#" onclick="gotoChat(this.id)" id="' . $poster_id .'">  '. $poster_name.' </a></p>
-                   
+                    <button  class="btn-floating btn-large waves-effect waves-light red" onclick="makeDeal(this.id)" id="' . $match_post['postID'] .
+                    '"><i class="material-icons">check</i></button>
                 </div>
             </div>';
-            // <button onclick="makeDeal('.$post_id.', this.id)" id="' . $match_post['postID'] .
-            // '"><i class="material-icons">check</i></button>
+          
         }
     }
 } else if ($postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
@@ -252,7 +248,8 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
     $sql_passenger_place = "SELECT * FROM PassengerPlaces, PassengerPosts
     WHERE PassengerPosts.userID <> '$user_id' 
     AND PassengerPosts.date = '$depature_date'
-    AND PassengerPosts.id = PassengerPlaces.id";
+    AND PassengerPosts.id = PassengerPlaces.id
+    AND PassengerPosts.availability = 1";
     $y=0;
     if ($resultP = mysqli_query($conn, $sql_passenger_place)) {
         while ($row = mysqli_fetch_array($resultP, MYSQLI_ASSOC)) {
@@ -343,9 +340,10 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
                     <p>Number of luggages: ' . $match_post['luggageNum'] . '</p>
                     <p>Posted by: <a href="#" onclick="gotoChat(this.id)" id="' . $poster_id .'">  '. $poster_name.' </a></p>
                 </div>
+                <button class="btn-floating btn-large waves-effect waves-light red" onclick="makeDeal(this.id)" id="' . $match_post['postID'] .
+                '"><i class="material-icons">check</i></button>
             </div>';
-            // <button class="btn-floating btn-large waves-effect waves-light red" onclick="makeDeal(this.id, ' .$post_id .')" id="' . $match_post['postID'] .
-            // '"><i class="material-icons">check</i></button>
+           
         }
     }
 } else {
@@ -361,7 +359,7 @@ if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
     </a>
 </div>
 
- <div id="output"></div>
+ <div id="outputtt"></div>
 
        
 </body>
