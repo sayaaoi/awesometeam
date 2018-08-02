@@ -8,11 +8,13 @@ include_once 'conn.php';
 
 <head>
     <title>Roadtrip</title>
-    <link rel="stylesheet" href="materialize.css"/>
+    <link rel="stylesheet" href="materialize.css"/>    
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700|Source+Sans+Pro:300,400,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         .slogan {
             padding: 70px;
+            font-family: "Raleway", sans-serif;
         }
     </style>
 

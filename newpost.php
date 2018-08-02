@@ -111,9 +111,9 @@ if (isset($_POST['ok_depature'])) {
     echo "<form method = 'post'>";
     foreach ($placeResult as $value) {
 
-        echo '<a href="#"  onclick="getDepature(this.id)" id="' . $value['id'] .
+        echo '<p><a href="#"  onclick="getDepature(this.id)" id="' . $value['id'] .
             '" value="alter_depature' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
+            '">' . $value['name'] .'  </a>  '. $value['address'] . ' </p><br>';
 
         $x++;
     }
@@ -186,9 +186,9 @@ if (isset($_POST['ok_destination'])) {
     $x=0;
     while ($value = mysqli_fetch_array($result_e, MYSQLI_ASSOC)) {
 
-        echo '<a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
+        echo '<p><a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
             '" value="alter_destination' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
+            '">' . $value['name'] .' </a>  '. $value['address'] . ' </p><br>';
         $x++;
     }
     echo '<button class="btn-flat" type="submit">ok</button></form>';
