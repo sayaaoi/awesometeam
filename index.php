@@ -16,7 +16,7 @@ include_once 'conn.php';
 
 </head>
 
-<body background="young-couple-driving-convertible-at-sunset.jpg">
+<body background="figure1.jpg">
 
 <nav>
     <div class="nav-wrapper">
