@@ -9,11 +9,6 @@
     <script src="js/libs/jquery.min.js" type="text/javascript"></script>
     <script src="materialize.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
-        // var cookies = document.cookie.split(";");
-        // for (var i = 0; i < cookies.length; i++)
-        //     eraseCookie(cookies[i].split("=")[0]);
-    </script>
    
 </head>
 
@@ -172,10 +167,10 @@ if (isset($_COOKIE['depa'])) {
 
 if (isset($_POST['ok_destination'])) {
     include 'conn.php';  
-  echo "got input";
+//   echo "got input";
     $got_place_region_e = $_POST['dest_region'];
     $got_place_input_e = $_POST['destination'];
-    echo $got_place_input_e;
+//     echo $got_place_input_e;
     // echo $_POST['destination'];
     $sql_place_e = "SELECT * FROM Places WHERE name LIKE '%$got_place_input_e%' AND address LIKE '%$got_place_region_e%'";
     $result_e = mysqli_query($conn, $sql_place_e);
