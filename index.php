@@ -15,7 +15,7 @@ include_once 'conn.php';
 
 </head>
 
-<body style="background-image:url('fig/young-couple-driving-convertible-at-sunset.jpg')">
+<body style="background-image:url('figs/young-couple-driving-convertible-at-sunset.jpg')">
 
 <nav>
     <div class="nav-wrapper">
