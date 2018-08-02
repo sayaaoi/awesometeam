@@ -11,16 +11,23 @@ include_once 'conn.php';
     <link rel="stylesheet" href="materialize.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+
 </head>
 
-<body>
+<body background="figure1.jpg">
+
+<h1>Hello world!</h1>
+<p><a href="https://www.w3schools.com">Visit W3Schools.com!</a></p>
 
 <nav>
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Road Trip Together</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="index.php">Home</a></li>
+<<<<<<< HEAD
             <!-- <li><a href="matchedRoutes.php">My Trips</a></li> -->
+=======
+>>>>>>> 7c0526cfb0a1d75ee8c84d4b4a1e41a0f87270cd
             <li><a href="myaccount.php">Profile</a></li>
             <li><a href="signup.php">Sign Up</a></li>
 
@@ -44,9 +51,20 @@ include_once 'conn.php';
 
 <div class="row">
 <div class="col s9">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c0526cfb0a1d75ee8c84d4b4a1e41a0f87270cd
 <div class="row">
 <div class="col s6">
+
+
+
 <h3>Passenger Posts:</h3>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c0526cfb0a1d75ee8c84d4b4a1e41a0f87270cd
 <?php
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";
