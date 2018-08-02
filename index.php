@@ -14,7 +14,7 @@ include_once 'conn.php';
 
 </head>
 
-<body background="figure1.jpg">
+<body>
 
 <nav>
     <div class="nav-wrapper">
@@ -36,6 +36,7 @@ include_once 'conn.php';
         </ul>
     </div>
 </nav>
+<img src="figs/fiture1.jpg" width=100% alt=""/>
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large red" href = "newpost.php">
         <i class="material-icons">add</i>
