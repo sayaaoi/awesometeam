@@ -9,12 +9,7 @@
     <script src="js/libs/jquery.min.js" type="text/javascript"></script>
     <script src="materialize.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
-        var cookies = document.cookie.split(";");
-        for (var i = 0; i < cookies.length; i++)
-            eraseCookie(cookies[i].split("=")[0]);
-    </script>
-
+   
 </head>
 
 <body>
@@ -26,7 +21,10 @@
             <div class="input-field col s6">
                     <label for="depature" class="label">Depature:</label>
                     <input id="depature" name="depature" type="text" class="input-field" />
-                    <!-- <input type="text" name="user_name" id="user_name" class="input-field"> -->
+            </div>
+            <div class="input-field col s6">
+                    <label for="depa_region" class="label">Region:</label>
+                    <input id="depa_region" name="depa_region" type="text" class="input-field" />
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_depature">OK</button>
@@ -91,10 +89,11 @@ while (!$get_valid_id) {
 // echo $post_id;
 
 if (isset($_POST['ok_depature'])) {
-    echo "got input";
+    // echo "got input";
     $got_place_input = $_POST['depature'];
-    echo $got_place_input;
-    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
+    $got_place_region = $_POST['depa_region'];
+    // echo $got_place_input;
+    $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%' AND address LIKE '%$got_place_region%'";
     $result = mysqli_query($conn, $sql_place);
     if (!$result) {
         printf("Error: %s\n", mysqli_error($conn));
@@ -106,17 +105,15 @@ if (isset($_POST['ok_depature'])) {
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $placeResult[] = $row;
     }
-    echo count($placeResult);
-    echo "reach this line";
+    // echo count($placeResult);
+    // echo "reach this line";
     $x = 0;
     echo "<form method = 'post'>";
     foreach ($placeResult as $value) {
 
-        // echo "alter_depature" . $x;
-        //TODO: not transfer text to uppercase
-        echo '<a href="#"  onclick="getDepature(this.id)" id="' . $value['id'] .
+        echo '<p><a href="#"  onclick="getDepature(this.id)" id="' . $value['id'] .
             '" value="alter_depature' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
+            '">' . $value['name'] .'  </a>  '. $value['address'] . ' </p><br>';
 
         $x++;
     }
@@ -146,6 +143,10 @@ if (isset($_COOKIE['depa'])) {
             <div class="input-field col s6">
                 <label for="destination" class="label">Destination:</label>
                 <input id="destination" name="destination" type="text" class="input"/>
+            </div> 
+            <div class="input-field col s6">
+                <label for="dest_region" class="label">Region:</label>
+                <input id="dest_region" name="dest_region" type="text" class="input"/>
             </div>
             <div class="input-field col s6">
                 <button class="btn waves-effect waves-light" type="submit" name="ok_destination">OK</button>
@@ -166,11 +167,12 @@ if (isset($_COOKIE['depa'])) {
 
 if (isset($_POST['ok_destination'])) {
     include 'conn.php';  
-  echo "got input";
+//   echo "got input";
+    $got_place_region_e = $_POST['dest_region'];
     $got_place_input_e = $_POST['destination'];
-    echo $got_place_input_e;
+//     echo $got_place_input_e;
     // echo $_POST['destination'];
-    $sql_place_e = "SELECT * FROM Places WHERE name LIKE '%$got_place_input_e%'";
+    $sql_place_e = "SELECT * FROM Places WHERE name LIKE '%$got_place_input_e%' AND address LIKE '%$got_place_region_e%'";
     $result_e = mysqli_query($conn, $sql_place_e);
 
     if (!$result_e) {
@@ -180,21 +182,13 @@ if (isset($_POST['ok_destination'])) {
 
     // $placeResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $placeResult_e = array();
-  echo "<form action = '#' method = 'post'>";
-
+    echo "<form action = '#' method = 'post'>";
+    $x=0;
     while ($value = mysqli_fetch_array($result_e, MYSQLI_ASSOC)) {
- //       $placeResult_e[] = $row_e;
-  //  }
- //   echo count($placeResult_e);
- //   $x = 0;
-//    echo "<form action = '#' method = 'post'>";
 
- //   foreach ($placeResult_e as $value) {
-//echo 'reach while';
-        echo '<a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
+        echo '<p><a href="#" onclick="getDestination(this.id)" id="' . $value['id'] .
             '" value="alter_destination' . $x .
-            '">' . $value['name'] .'   '. $value['address'] . ' </a><br>';
-
+            '">' . $value['name'] .' </a>  '. $value['address'] . ' </p><br>';
         $x++;
     }
     echo '<button class="btn-flat" type="submit">ok</button></form>';
@@ -295,36 +289,45 @@ if ($post_type == 'passenger') {
 
     </form>
 
-
-
 <?php
 }
 
+// prepare and bind
+$stmt_p = $conn->prepare("INSERT INTO PassengerPosts
+        (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $x=1;
+$stmt_p->bind_param("ssdisssii", $post_id, $depature_date, $proposed_price, $x, $depature_id,$destination_id, $user_id,
+$passenger_num, $luggage_num);
 
+#$stmt_d = $conn->prepare("SELECT * FROM DriverPosts WHERE postID = ?");
+#$stmt_d->bind_param("s", $post_id);
     if (isset($_POST['ok_passenger_info'])) {
         $passenger_num = $_POST['passenger_num'];
         $luggage_num = $_POST['luggage_num'];
         $depature_date = $_POST['depature_date'];
         $proposed_price = $_POST['proposed_price'];
 
-        $sql_insert_post = "INSERT INTO PassengerPosts
-        (postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
-        VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
-        $passenger_num, $luggage_num)";
+        $stmt_p->execute();
 
-        echo $depature_date;
-        echo $sql_insert_post;
-        if (mysqli_query($conn, $sql_insert_post)) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
-        }
+        #$sql_insert_post = "INSERT INTO PassengerPosts
+        #(postID, date, proposedPrice, availability, startPlaceID, endPlaceID, userID, passengerNum, luggageNum)
+        #VALUES ('$post_id', '$depature_date', $proposed_price, ".true.", '$depature_id','$destination_id', '$user_id',
+        #$passenger_num, $luggage_num)";
+
+        // echo $depature_date;
+        // echo $sql_insert_post;
+        // if (mysqli_query($conn, $sql_insert_post)) {
+        //     echo "New record created successfully";
+        // } else {
+        //     echo "Error: " . $sql_insert_post . "<br>" . $conn->error;
+        // }
         
     }
    
     
     if (isset($_POST['ok_car_type'])) {
-        $car_type = $_POST['car_type'];
+        $car_type = htmlentities(mysqli_real_escape_string($conn, $_POST['car_type']));
         $depature_date = $_POST['depature_date'];
         $proposed_price = $_POST['proposed_price'];
         //TODO

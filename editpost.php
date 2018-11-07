@@ -70,16 +70,15 @@ $post_type;
 $passenger_num;
 $luggage_num;
 $car_type; 
-if ( $postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)){
+if ($postResult = mysqli_fetch_array($result_p, MYSQLI_ASSOC)){
     
     $post_type = 'PassengerPosts';
     $passenger_num = $postResult['passengerNum'];
     $luggage_num = $postResult['luggageNum'];
-} else if ( $postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)){
+} else if ($postResult = mysqli_fetch_array($result_d, MYSQLI_ASSOC)){
      $post_type = 'DriverPosts';
      $car_type = $postResult['carType'];
- }
-else {
+} else {
     printf("Error: %s\n cannot find data!");
 }
 
@@ -88,21 +87,25 @@ $destination_id = $postResult['endPlaceID'];
 $depature_date = $postResult['date'];
 $proposed_price = $postResult['proposedPrice'];
 
-
+if ($depa_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$depature_id'")) {
+    $depa = mysqli_fetch_array($depa_result, MYSQLI_ASSOC);
+    $depa_name = $depa['name'];
+    $depa_addr = $depa['address'];
+}
+if ($dest_result = mysqli_query($conn, "SELECT * FROM Places WHERE id = '$destination_id'")) {
+    $dest = mysqli_fetch_array($dest_result, MYSQLI_ASSOC);
+    $dest_name = $dest['name'];
+    $dest_addr = $dest['address'];
+}
 
 
 $sql_update_post = '';
 
-// <div class="row">
-//                 <div class="col s12 m6">  </div>
-//                 </div>
-
-//TODO: show places' name
    echo '   <div class="card">
                         <div class="card-content">
                             <p>Post ID: '.$post_id.'</p>
-                            <p>Depature: '.$depature_id.'</p>
-                            <p>Destination: '.$destination_id.'</p>
+                            <p>Depature: ' . $depa_name . '     Address: ' . $depa_addr . '</p>
+                            <p>Destination: ' . $dest_name . '     Address: ' . $dest_addr . '</p>
                             <p>Depature Date: '.$depature_date.'</p>
                             <p>Porposed Price: '.$proposed_price.'</p>
                         </div> 
@@ -171,7 +174,7 @@ $sql_update_post = '';
 
 
         if (isset($_POST['ok_edit_depa'])) {
-            $got_place_input = $_POST['edit_depa'];
+            $got_place_input = htmlentities(mysqli_real_escape_string($_POST['edit_depa']));
             $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
             $result = mysqli_query($conn, $sql_place);
             if (!$result) {
@@ -238,7 +241,7 @@ $sql_update_post = '';
 
         if (isset($_POST['ok_edit_dest'])) {
 
-            $got_place_input = $_POST['edit_dest'];
+            $got_place_input =  htmlentities(mysqli_real_escape_string($_POST['edit_dest']));
 
             $sql_place = "SELECT * FROM Places WHERE name LIKE '%$got_place_input%'";
             $result = mysqli_query($conn, $sql_place);
@@ -376,12 +379,7 @@ if (isset($_POST['ok_post'])) {
     header("Location: myaccount.php");
 }
 ?>
-  <!-- <script>
-        var retVal = confirm("Are you sure to discard this edition?");
-        if( retVal == true ){
-            window.location.href = "myaccount.php";
-        }
-    </script> -->
+
     </div>
 </body>
 

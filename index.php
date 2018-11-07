@@ -1,7 +1,5 @@
 <?php
-// include_once 'navbar.php';
 session_start();
-// echo '<a href = "newpost.php">submit</a>';
 include_once 'conn.php';
 ?>
 
@@ -10,14 +8,22 @@ include_once 'conn.php';
 
 <head>
     <title>Roadtrip</title>
-    <link rel="stylesheet" href="materialize.css"/>
+    <link rel="stylesheet" href="materialize.css"/>    
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700|Source+Sans+Pro:300,400,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .slogan {
+            padding: 70px;
+            font-family: "Raleway", sans-serif;
+        }
+    </style>
+
 </head>
 
 <body>
 
 <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper black">
         <a href="#" class="brand-logo">Road Trip Together</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="index.php">Home</a></li>
@@ -25,25 +31,35 @@ include_once 'conn.php';
             <li><a href="signup.php">Sign Up</a></li>
 
 
-<?php
-if (isset($_SESSION['u_id'])) {
-    echo '<li><a href="logout.php">log out</a></li>';
-} else {
-    echo '<li><a href="login.php">log in</a></li>';
-}
-?>
+            <?php
+            if (isset($_SESSION['u_id'])) {
+                echo '<li><a href="logout.php">log out</a></li>';
+            } else {
+                echo '<li><a href="login.php">log in</a></li>';
+            }
+            ?>
 
         </ul>
     </div>
 </nav>
+<h3 class="slogan">Hello world!<br />Life is like a voyage.</h3>
+
+<img src="figs/fiture1.jpg" width=100% alt=""/>
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large red" href = "newpost.php">
         <i class="material-icons">add</i>
     </a>
 </div>
 
-<?php
+<div class="row">
+<div class="col s9">
+<div class="row">
+<div class="col s6">
 
+
+
+<h3>Passenger Posts:</h3>
+<?php
 //TODO: Simplify mysql query
 $sql_post_p = "SELECT * FROM PassengerPosts";
 $sql_post_d = "SELECT * FROM DriverPosts";
@@ -54,16 +70,13 @@ if (!$result_p || !$result_d) {
     // exit();
 }
 
-// $postResult_p = mysqli_fetch_all($result_p, MYSQLI_ASSOC);
 $postResult_p = array();
 
 while ($row = mysqli_fetch_array($result_p, MYSQLI_ASSOC)) {
     $postResult_p[] = $row;
 }
-// echo count($placeResult);
 
 $x = 0;
-// while ($arrayResult = mysql_fetch_array($place_result)) {
 foreach ($postResult_p as $value) {
 
     $depa_id = $value['startPlaceID'];
@@ -91,23 +104,23 @@ foreach ($postResult_p as $value) {
     $dest_name = $destResult['name'];
 
 
-    echo '  <div class="row">
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-content">
-                            <p>Depature: '.$depa_name.'</p>
-                            <p>Destination: '.$dest_name.'</p>
-                            <p>Depature Date: '.$value['date'].'</p>
-                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+    echo '<div class="card">
+            <div class="card-content">
+                <p>Depature: '.$depa_name.'</p>
+                <p>Destination: '.$dest_name.'</p>
+                <p>Depature Date: '.$value['date'].'</p>
+                <p>Porposed Price: '.$value['proposedPrice'].'</p>
+            </div>
+        </div>';
 
 }
+?>
+</div>
 
-// $postResult_d = mysqli_fetch_all($result_d, MYSQLI_ASSOC);
-// echo count($placeResult);
+ <div class="col s6">
+    <h3>Driver Posts:</h3>
+<?php
+
 $postResult_d = array();
 
 while ($row = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
@@ -115,7 +128,6 @@ while ($row = mysqli_fetch_array($result_d, MYSQLI_ASSOC)) {
 }
 
 $x = 0;
-// while ($arrayResult = mysql_fetch_array($place_result)) {
 foreach ($postResult_d as $value) {
 
     $depa_id = $value['startPlaceID'];
@@ -143,21 +155,46 @@ foreach ($postResult_d as $value) {
     $dest_name = $destResult['name'];
 
 
-    echo '  <div class="row">
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-content">
-                            <p>Depature: '.$depa_name.'</p>
-                            <p>Destination: '.$dest_name.'</p>
-                            <p>Depature Date: '.$value['date'].'</p>
-                            <p>Porposed Price: '.$value['proposedPrice'].'</p>
-                        </div>
-                    </div>
-                </div>
-            </div>';
+    echo '<div class="card">
+            <div class="card-content">
+                <p>Depature: '.$depa_name.'</p>
+                <p>Destination: '.$dest_name.'</p>
+                <p>Depature Date: '.$value['date'].'</p>
+                <p>Porposed Price: '.$value['proposedPrice'].'</p>
+            </div>
+        </div>';
 
 }
 ?>
+</div>
+</div>
+</div>
+<div class="col s3">
+    <h3>User list:</h3>
+<?php
+
+$sql_user = "SELECT * FROM Users";
+// $result = mysqli_query($conn, $sql_user);
+if ($result = mysqli_query($conn, $sql_user)) {
+    // echo '<div class="col s3">';
+
+    while ($value = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        
+        echo '<p><a href="#" onclick="gotoChat(this.id)" id="' . $value['id'] .
+        '">' . $value['name'] .'</a>   '. $value['email'] . ' </p>';
+    }
+    echo "</div>";
+}
+?>
+</div>
+<script>
+    function gotoChat(clicked_id) {
+        
+        localStorage.setItem("userID",clicked_id);
+        window.location.href = "chat.php";
+    }
+
+</script>
 
 
 </body>
